@@ -162,7 +162,7 @@ log_and_echo "$SUCCESSFUL" "Successfully installed Cloud Foundry CLI"
 # setup bluemix env
 ##########################################
 # attempt to  target env automatically
-CF_API=$(${EXT_DIR}/cf api)
+CF_API=$(${EXT_DIR}/cf api https://api.stage1.ng.bluemix.net)
 RESULT=$?
 debugme echo "CF_API: ${CF_API}"
 if [ $RESULT -eq 0 ]; then
@@ -214,7 +214,7 @@ fi
 log_and_echo "$INFO" "BLUEMIX_API_HOST: ${BLUEMIX_API_HOST}"
 log_and_echo "$INFO" "BLUEMIX_TARGET: ${BLUEMIX_TARGET}"
 
-export APPSCAN_ENV=https://appscan.bluemix.net
+export APPSCAN_ENV=https://appscan-test.bluemix.net
 
 # fetch the current version of utils
 cur_dir=`pwd`
