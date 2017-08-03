@@ -162,8 +162,8 @@ log_and_echo "$SUCCESSFUL" "Successfully installed Cloud Foundry CLI"
 # setup bluemix env
 ##########################################
 # attempt to  target env automatically
-${EXT_DIR}/cf api https://api.stage1.ng.bluemix.net
-${EXT_DIR}/cf login -u Olivier_Thomann@ca.ibm.com -p B1ykqu44!
+# ${EXT_DIR}/cf api https://api.stage1.ng.bluemix.net
+# ${EXT_DIR}/cf login -u Olivier_Thomann@ca.ibm.com -p B1ykqu44!
 CF_API=$(${EXT_DIR}/cf api)
 RESULT=$?
 debugme echo "CF_API: ${CF_API}"
