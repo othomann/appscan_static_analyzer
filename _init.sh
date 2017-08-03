@@ -163,6 +163,7 @@ log_and_echo "$SUCCESSFUL" "Successfully installed Cloud Foundry CLI"
 ##########################################
 # attempt to  target env automatically
 ${EXT_DIR}/cf api https://api.stage1.ng.bluemix.net
+${EXT_DIR}/cf login -u Olivier_Thomann@ca.ibm.com -p B1ykqu44!
 CF_API=$(${EXT_DIR}/cf api)
 RESULT=$?
 debugme echo "CF_API: ${CF_API}"
@@ -187,10 +188,10 @@ elif [ -n "$BLUEMIX_TARGET" ]; then
     elif [ "$BLUEMIX_TARGET" == "prod" ]; then 
         log_and_echo "$INFO" "Targetting production Bluemix"
         export BLUEMIX_API_HOST="api.ng.bluemix.net"
-    else 
+    else
         log_and_echo "$INFO" "$ERROR" "Unknown Bluemix environment specified"
-    fi 
-else 
+    fi
+else
     log_and_echo "$INFO" "Targetting production Bluemix"
     export BLUEMIX_API_HOST="api.ng.bluemix.net"
 fi
