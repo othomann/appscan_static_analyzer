@@ -1,5 +1,5 @@
 {
-    "id": "ibm.devops.services.pipeline.appscan.static.builder",
+    "id": "ibm.devops.services.pipeline.appscan.static.builder.newappscan",
     "version": 1,
     "name_key": "ExtName",
     "desc_key": "ExtDesc",
@@ -7,18 +7,18 @@
     "message_key": "ExtMessage",
     "inputs": [
         {
-            "type": "Bluemix",
+            "type": "Artifacts",
             "inclusion" : "always"
         }
     ],
     "params": [
         {
-            "name": "SETUP_SERVICE_SPACE",
-            "type": "Checkbox",
-            "required": "true",
-            "default_value": "false",
-            "label_key": "ACCEPT_KEY",
-            "desc_key": "ACCEPT_DESC"
+            "name": "SERVICE_INSTANCE",
+            "type": "Text",
+            "required": false,
+            "default_value": "(default)",
+            "label_key": "SERVICE_INSTANCE_KEY",
+            "desc_key": "SERVICE_INSTANCE_DESC"
         },
         {
             "name": "WAIT_TIME",
@@ -41,7 +41,8 @@
 set +x
 set +e
 export INIT_START_TIME=$(date +\"%s\")
-export SETUP_SERVICE_SPACE=#SETUP_SERVICE_SPACE#
+export TOOLCHAIN_TOKEN PIPELINE_TOOLCHAIN_ID
+export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
 export WAIT_TIME=#WAIT_TIME#
 # OSSC line
 dpkg -l | grep '^ii' > $EXT_DIR/pkglist
@@ -55,6 +56,27 @@ INIT_END_TIME=$(date +\"%s\")
 export INIT_EST_TIME=$(($INIT_END_TIME-$INIT_START_TIME))
 log_and_echo \"$INFO\" \"Init runtime of `date -u -d @\"$INIT_EST_TIME\" +\'%-Mm %-Ss\'`\"
 log_and_echo \"$INFO\" \"Starting test script\"
+
+# get toolchain services
+$EXT_DIR/get-service-instances.sh
+if [ $? -ne 0 ]; then
+    echo \"Failed to load toolchain\"
+    exit 1
+fi
+
+# generate sonar environment variables from #SONAR_SERVICE_INSTANCE# service instance
+node $EXT_DIR/generate-appscan-vars.js >/tmp/appscan.txt
+if [ ! -s /tmp/appscan.txt ]; then
+    echo \"Warning, no 'IBM Application Security' card available\"
+    export APPSCAN_INSTANCE_NAME=test
+    export APPSCAN_SERVER_URL=https://appscan-test.bluemix.net
+    export APPSCAN_USER_ID=3c1b3112-7378-e711-b334-002590731623
+    export APPSCAN_USER_TOKEN=UG5j5/5vsym1MCa5YDzbwb4ma2aYybyMVdVB8pjwc+Y=
+else
+. /tmp/appscan.txt
+fi
+
+export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
 
 # helper function to print the end time for this script
 end_script_time() {

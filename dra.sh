@@ -39,12 +39,6 @@ function dra_commands {
     echo -e "${no_color}"
 }
 
-
-
-
-
-
-
 installDRADependencies
 
 echo ""
@@ -70,8 +64,6 @@ do
     dra_commands "${DRA_LOG_FILE}" "${zipFile}" "staticsecurityscan" "${appscan_url}"
     # upload the summary appscan report
     #dra_commands "${DRA_SUMMARY_FILE}" "${DRA_SUMMARY_FILE}" "staticsecurityscan"
-
-
 
     # Clean up directory
     rm -r $resultDirectory

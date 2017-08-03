@@ -27,10 +27,6 @@ from datetime import datetime
 from subprocess import call, Popen, PIPE
 import python_utils
 
-APP_SECURITY_SERVICE='Application Security on Cloud'
-DEFAULT_SERVICE=APP_SECURITY_SERVICE
-DEFAULT_SERVICE_PLAN="free"
-DEFAULT_SERVICE_NAME=DEFAULT_SERVICE
 DEFAULT_SCANNAME="staticscan"
 DEFAULT_OLD_SCANS_TO_KEEP="5"
 DEFAULT_OLD_SCANS_TO_KEEP_INT=5
@@ -663,7 +659,7 @@ def wait_for_scans (joblist):
     high_issue_count = 0
     med_issue_count=0
     python_utils.LOGGER.debug("Waiting for joblist: "+str(joblist))
-    dash = python_utils.find_service_dashboard(APP_SECURITY_SERVICE)
+    dash = os.environ.get('APPSCAN_SERVER_URL')
     for jobid in joblist:
         try:
             while True:
@@ -787,10 +783,8 @@ try:
             print "sendMessage.sh not found, notifications not attempted"
     
     python_utils.WAIT_TIME = python_utils.get_remaining_wait_time(first = True)
-    python_utils.LOGGER.info("Getting credentials for Static Analysis service")
-    creds = python_utils.get_credentials_for_non_binding_service(service=APP_SECURITY_SERVICE)
     python_utils.LOGGER.info("Connecting to Static Analysis service")
-    appscan_login(creds['bindingid'],creds['password'])
+    appscan_login(os.environ.get('APPSCAN_USER_ID'),os.environ.get('APPSCAN_USER_TOKEN'))
 
     # allow testing connection without full job scan and submission
     if parsed_args['loginonly']:
@@ -822,7 +816,7 @@ try:
                 if (not errMsg):
                     errMsg = "Check status of existing scans."
                 #Error, we didn't return as many jobs as we should have
-                dash = python_utils.find_service_dashboard(APP_SECURITY_SERVICE)
+                dash = os.environ.get('APPSCAN_SERVER_URL')
                 if os.path.isfile("%s/utilities/sendMessage.sh" % python_utils.EXT_DIR):
                     command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> could not successfully submit scan.  {errMsg}\"'.format(path=python_utils.EXT_DIR,url=dash,errMsg=errMsg)
                     proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
@@ -859,7 +853,7 @@ try:
     if not all_jobs_complete:
         # send slack notification 
         if os.path.isfile("%s/utilities/sendMessage.sh" % python_utils.EXT_DIR):
-            dash = python_utils.find_service_dashboard(APP_SECURITY_SERVICE)
+            dash = os.environ.get('APPSCAN_SERVER_URL')
             command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> did not complete within {wait} minutes.  Stage will need to be re-run after the scan completes.\"'.format(path=python_utils.EXT_DIR,url=dash,wait=python_utils.FULL_WAIT_TIME)
             proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
             out, err = proc.communicate();
@@ -872,7 +866,7 @@ try:
         if high_issue_count > 0:
             # send slack notification 
             if os.path.isfile("%s/utilities/sendMessage.sh" % python_utils.EXT_DIR):
-                dash = python_utils.find_service_dashboard(APP_SECURITY_SERVICE)
+                dash = os.environ.get('APPSCAN_SERVER_URL')
                 command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> completed with {issues} high issues detected in the application.\"'.format(path=python_utils.EXT_DIR,url=dash, issues=high_issue_count)
                 proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
                 out, err = proc.communicate();
@@ -884,13 +878,13 @@ try:
 
         if os.path.isfile("%s/utilities/sendMessage.sh" % python_utils.EXT_DIR):
             if med_issue_count > 0: 
-                dash = python_utils.find_service_dashboard(APP_SECURITY_SERVICE)
+                dash = os.environ.get('APPSCAN_SERVER_URL')
                 command='SLACK_COLOR=\"warning\" {path}/utilities/sendMessage.sh -l good -m \"<{url}|Static security scan> completed with no major issues.\"'.format(path=python_utils.EXT_DIR,url=dash)
                 proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
                 out, err = proc.communicate();
                 python_utils.LOGGER.debug(out)
             else:            
-                dash = python_utils.find_service_dashboard(APP_SECURITY_SERVICE)
+                dash = os.environ.get('APPSCAN_SERVER_URL')
                 command='{path}/utilities/sendMessage.sh -l good -m \"<{url}|Static security scan> completed with no major issues.\"'.format(path=python_utils.EXT_DIR,url=dash)
                 proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
                 out, err = proc.communicate();

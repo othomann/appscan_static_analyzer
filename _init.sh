@@ -81,7 +81,7 @@ if [ -z "$APPLICATION_VERSION" ]; then
         if [ -z $BUILD_NUMBER ]; then 
             export APPLICATION_VERSION=$(date +%s)
         else 
-            export APPLICATION_VERSION=$BUILD_NUMBER    
+            export APPLICATION_VERSION=$BUILD_NUMBER
         fi
     else
         export APPLICATION_VERSION=$SELECTED_BUILD
@@ -194,48 +194,12 @@ else
     export BLUEMIX_API_HOST="api.ng.bluemix.net"
 fi
 
-################################
-# Login to Container Service   #
-################################
-if [ -n "$BLUEMIX_USER" ] || [ ! -f ~/.cf/config.json ]; then
-    # need to gather information from the environment 
-    # Get the Bluemix user and password information 
-    if [ -z "$BLUEMIX_USER" ]; then 
-        log_and_echo "$ERROR" "Please set BLUEMIX_USER on environment"
-        ${EXT_DIR}/utilities/sendMessage.sh -l bad -m "Please set BLUEMIX_USER as an environment property"
-        exit 1
-    fi 
-    if [ -z "$BLUEMIX_PASSWORD" ]; then 
-        log_and_echo "$ERROR" "Please set BLUEMIX_PASSWORD as an environment property environment"
-        ${EXT_DIR}/utilities/sendMessage.sh -l bad -m "Please set BLUEMIX_PASSWORD as an environment property"
-        exit 1
-    fi 
-    if [ -z "$BLUEMIX_ORG" ]; then 
-        export BLUEMIX_ORG=$BLUEMIX_USER
-        log_and_echo "$LABEL" "Using ${BLUEMIX_ORG} for Bluemix organization, please set BLUEMIX_ORG if on the environment if you wish to change this."
-    fi 
-    if [ -z "$BLUEMIX_SPACE" ]; then
-        export BLUEMIX_SPACE="dev"
-        log_and_echo "$LABEL" "Using ${BLUEMIX_SPACE} for Bluemix space, please set BLUEMIX_SPACE if on the environment if you wish to change this."
-    fi 
-    log_and_echo "$LABEL" "Targetting information.  Can be updated by setting environment variables"
-    log_and_echo "$INFO" "BLUEMIX_USER: ${BLUEMIX_USER}"
-    log_and_echo "$INFO" "BLUEMIX_SPACE: ${BLUEMIX_SPACE}"
-    log_and_echo "$INFO" "BLUEMIX_ORG: ${BLUEMIX_ORG}"
-    log_and_echo "$INFO" "BLUEMIX_PASSWORD: xxxxx"
-    echo ""
-    log_and_echo "$LABEL" "Logging in to Bluemix using environment properties"
-    debugme echo "login command: cf login -a ${BLUEMIX_API_HOST} -u ${BLUEMIX_USER} -p XXXXX -o ${BLUEMIX_ORG} -s ${BLUEMIX_SPACE}"
-    cf login -a ${BLUEMIX_API_HOST} -u ${BLUEMIX_USER} -p ${BLUEMIX_PASSWORD} -o ${BLUEMIX_ORG} -s ${BLUEMIX_SPACE} 2> /dev/null
-    RESULT=$?
-else 
-    # we are already logged in.  Simply check via cf command 
-    log_and_echo "$LABEL" "Logging into IBM Container Service using credentials passed from IBM DevOps Services"
-    cf target >/dev/null 2>/dev/null
-    RESULT=$?
-    if [ ! $RESULT -eq 0 ]; then
-        log_and_echo "$INFO" "cf target did not return successfully.  Login failed."
-    fi 
+# we are already logged in.  Simply check via cf command 
+log_and_echo "$LABEL" "Logging into IBM Container Service using credentials passed from IBM DevOps Services"
+cf target >/dev/null 2>/dev/null
+RESULT=$?
+if [ ! $RESULT -eq 0 ]; then
+    log_and_echo "$INFO" "cf target did not return successfully.  Login failed."
 fi 
 
 # check login result 
@@ -250,53 +214,7 @@ fi
 log_and_echo "$INFO" "BLUEMIX_API_HOST: ${BLUEMIX_API_HOST}"
 log_and_echo "$INFO" "BLUEMIX_TARGET: ${BLUEMIX_TARGET}"
 
-########################
-# get BLUEMIX_USER     #
-########################
-if [ -z "$BLUEMIX_USER" ]; then
-    # set targeting information from config.json file
-    if [ -f ~/.cf/config.json ]; then
-        debugme echo $(cat ~/.cf/config.json)
-        get_targeting_info
-    fi
-fi
-
-############################
-# enable logging to logmet #
-############################
-setup_met_logging "${BLUEMIX_USER}" "${BLUEMIX_PASSWORD}"
-RESULT=$?
-if [ $RESULT -ne 0 ]; then
-    log_and_echo "$WARN" "LOGMET setup failed with return code ${RESULT}"
-fi
-
-###############
-# setup appscan
-###############
-# appscan has different targets as well for bluemix staging vs prod
-if [ -n "$BLUEMIX_TARGET" ]; then
-    if [ "$BLUEMIX_TARGET" == "staging" ]; then 
-        # staging
-        export APPSCAN_ENV=https://appscan-test.bluemix.net
-        #export APPSCAN_DOMAIN=https://appscan-test.bluemix.net
-        export APPSCAN_OPTS=-DBLUEMIX_SERVER=https://appscan-test.bluemix.net
-    elif [ "$BLUEMIX_TARGET" == "prod" ]; then 
-        # prod
-        export APPSCAN_ENV=https://appscan.bluemix.net
-        #export APPSCAN_DOMAIN=https://appscan.bluemix.net
-        export APPSCAN_OPTS=-DBLUEMIX_SERVER=https://appscan.bluemix.net
-    else 
-        # unknown, setup for prod
-        export APPSCAN_ENV=https://appscan.bluemix.net
-        #export APPSCAN_DOMAIN=https://appscan.bluemix.net
-        export APPSCAN_OPTS=-DBLUEMIX_SERVER=https://appscan.bluemix.net
-    fi 
-else 
-    # none set, set for prod
-    export APPSCAN_ENV=https://appscan.bluemix.net
-    #export APPSCAN_DOMAIN=https://appscan.bluemix.net
-    export APPSCAN_OPTS=-DBLUEMIX_SERVER=https://appscan.bluemix.net
-fi
+export APPSCAN_ENV=https://appscan.bluemix.net
 
 # fetch the current version of utils
 cur_dir=`pwd`
@@ -317,8 +235,8 @@ cd `ls -d SAClient*/`
 export APPSCAN_INSTALL_DIR=`pwd`
 cd $cur_dir
 export PATH=$APPSCAN_INSTALL_DIR/bin:$PATH
-export LD_LIBRARY_PATH=$APPSCAN_NSTALL_DIR/bin:$LD_LIBRARY_PATH
-debugme appscan.sh version
+export LD_LIBRARY_PATH=$APPSCAN_INSTALL_DIR/bin:$LD_LIBRARY_PATH
+echo `appscan.sh version`
 
 ############################
 # setup DRA                #
@@ -331,3 +249,6 @@ popd >/dev/null
 source $EXT_DIR/dra_utilities/init.sh
 
 log_and_echo "$LABEL" "Initialization complete"
+
+export TOOLCHAINS_API=https://$( echo $IDS_URL | sed 's!^.*//\([^/]*\)/.*$!\1!g'  | sed 's!devops!devops-api!g' )/v1/toolchains
+export SERVICE_INSTANCE_FILE=/tmp/tc_services.json
