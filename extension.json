@@ -67,7 +67,7 @@ fi
 # generate appscan environment variables from #SERVICE_INSTANCE# service instance
 node $EXT_DIR/generate-appscan-vars.js >/tmp/appscan.txt
 if [ ! -s /tmp/appscan.txt ]; then
-    echo \"Warning, no 'IBM Application Security' card available\"
+    echo \"Error, no 'IBM Application Security' card available\"
     exit 1
 else
 . /tmp/appscan.txt
