@@ -64,14 +64,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# generate sonar environment variables from #SONAR_SERVICE_INSTANCE# service instance
+# generate appscan environment variables from #SERVICE_INSTANCE# service instance
 node $EXT_DIR/generate-appscan-vars.js >/tmp/appscan.txt
 if [ ! -s /tmp/appscan.txt ]; then
     echo \"Warning, no 'IBM Application Security' card available\"
-    export APPSCAN_INSTANCE_NAME=test
-    export APPSCAN_SERVER_URL=https://appscan-test.bluemix.net
-    export APPSCAN_USER_ID=3c1b3112-7378-e711-b334-002590731623
-    export APPSCAN_USER_TOKEN=UG5j5/5vsym1MCa5YDzbwb4ma2aYybyMVdVB8pjwc+Y=
+    exit 1
 else
 . /tmp/appscan.txt
 fi
