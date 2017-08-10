@@ -34,12 +34,12 @@ if (appscan_service) {
 }
 
 function findServiceInstance(services, serviceName) {
-	var newappscan = services.filter(function(v) {
-		return v.service_id === 'newappscan' &&
+	var service = services.filter(function(v) {
+		return v.service_id === 'appscan' &&
 			(serviceName === '(default)' ||
 				v.parameters && v.parameters.name === serviceName);
 	});
-	if (newappscan.length > 0) {
-		return newappscan[0];
+	if (service.length > 0) {
+		return service[0];
 	}
 }
