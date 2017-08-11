@@ -75,6 +75,8 @@ fi
 
 export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
 
+echo APPSCAN_OPTS = ${APPSCAN_OPTS}
+ 
 # helper function to print the end time for this script
 end_script_time() {
     SCRIPT_END_TIME=$(date +\"%s\")
