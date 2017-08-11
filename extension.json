@@ -24,7 +24,7 @@
             "name" : "APPSCAN_APP_ID",
             "type" : "Text",
             "required" : "true",
-            "default_value" : "facfe9f0-e4d7-41e3-8ebb-a264760d5161",
+            "default_value" : "",
             "label_key" : "APPSCAN_APP_ID_KEY",
             "desc_key" : "APPSCAN_APP_ID_DESC"
         },
