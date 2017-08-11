@@ -102,6 +102,7 @@ end_script_time() {
 callOpenToolchainAPI
 
 echo ============ INSTALLED APPS ======================
+appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
 appscan.sh list_apps
 echo ==================================================
 
