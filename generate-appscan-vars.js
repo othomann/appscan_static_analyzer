@@ -17,6 +17,8 @@
 var fs = require('fs');
 var services = JSON.parse(fs.readFileSync(process.env.SERVICE_INSTANCE_FILE)).services;
 
+console.log(services);
+
 var appscan_service = findServiceInstance(services, process.env.SERVICE_INSTANCE);
 if (appscan_service) {
 	var appscan_id = appscan_service.parameters.name,
