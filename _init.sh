@@ -132,97 +132,13 @@ else
 fi 
 export LOG_DIR=$ARCHIVE_DIR
 
-#############################
-# Install Cloud Foundry CLI #
-#############################
-cf help &> /dev/null
-RESULT=$?
-if [ $RESULT -eq 0 ]; then
-    # if already have an old version installed, save a pointer to it
-    export OLDCF_LOCATION=`which cf`
-fi
-# get the newest version
-log_and_echo "$INFO" "Installing Cloud Foundry CLI"
-pushd . >/dev/null
-cd $EXT_DIR 
-curl --silent -o cf-linux-amd64.tgz -v -L https://cli.run.pivotal.io/stable?release=linux64-binary &>/dev/null 
-gunzip cf-linux-amd64.tgz &> /dev/null
-tar -xvf cf-linux-amd64.tar  &> /dev/null
-cf help &> /dev/null
-RESULT=$?
-if [ $RESULT -ne 0 ]; then
-    log_and_echo "$ERROR" "Could not install the cloud foundry CLI"
-    ${EXT_DIR}/utilities/sendMessage.sh -l bad -m "Could not install the cloud foundry CLI"
-    exit 1
-fi  
-popd >/dev/null
-log_and_echo "$SUCCESSFUL" "Successfully installed Cloud Foundry CLI"
-
-##########################################
-# setup bluemix env
-##########################################
-# attempt to  target env automatically
-# ${EXT_DIR}/cf api https://api.stage1.ng.bluemix.net
-# ${EXT_DIR}/cf login -u Olivier_Thomann@ca.ibm.com -p B1ykqu44!
-CF_API=$(${EXT_DIR}/cf api)
-RESULT=$?
-debugme echo "CF_API: ${CF_API}"
-if [ $RESULT -eq 0 ]; then
-    # find the bluemix api host
-    export BLUEMIX_API_HOST=`echo $CF_API  | awk '{print $3}' | sed '0,/.*\/\//s///'`
-    echo $BLUEMIX_API_HOST | grep 'stage1'
-    if [ $? -eq 0 ]; then
-        # on staging, make sure bm target is set for staging
-        export BLUEMIX_TARGET="staging"
-        export BLUEMIX_API_HOST="api.stage1.ng.bluemix.net"
-    else
-        # on prod, make sure bm target is set for prod
-        export BLUEMIX_TARGET="prod"
-        export BLUEMIX_API_HOST="api.ng.bluemix.net"
-    fi
-elif [ -n "$BLUEMIX_TARGET" ]; then
-    # cf not setup yet, try manual setup
-    if [ "$BLUEMIX_TARGET" == "staging" ]; then 
-        log_and_echo "$INFO" "Targetting staging Bluemix"
-        export BLUEMIX_API_HOST="api.stage1.ng.bluemix.net"
-    elif [ "$BLUEMIX_TARGET" == "prod" ]; then 
-        log_and_echo "$INFO" "Targetting production Bluemix"
-        export BLUEMIX_API_HOST="api.ng.bluemix.net"
-    else
-        log_and_echo "$INFO" "$ERROR" "Unknown Bluemix environment specified"
-    fi
-else
-    log_and_echo "$INFO" "Targetting production Bluemix"
-    export BLUEMIX_API_HOST="api.ng.bluemix.net"
-fi
-
-# we are already logged in.  Simply check via cf command 
-log_and_echo "$LABEL" "Logging into IBM Container Service using credentials passed from IBM DevOps Services"
-cf target >/dev/null 2>/dev/null
-RESULT=$?
-if [ ! $RESULT -eq 0 ]; then
-    log_and_echo "$INFO" "cf target did not return successfully.  Login failed."
-fi 
-
-# check login result 
-if [ $RESULT -eq 1 ]; then
-    log_and_echo "$ERROR" "Failed to login to IBM Bluemix"
-    ${EXT_DIR}/utilities/sendMessage.sh -l bad -m "Failed to login to IBM Bluemix"
-    exit $RESULT
-else 
-    log_and_echo "$SUCCESSFUL" "Successfully logged into IBM Bluemix"
-fi 
-
-log_and_echo "$INFO" "BLUEMIX_API_HOST: ${BLUEMIX_API_HOST}"
-log_and_echo "$INFO" "BLUEMIX_TARGET: ${BLUEMIX_TARGET}"
-
 # fetch the current version of utils
 cur_dir=`pwd`
 cd ${EXT_DIR}
 #CLI is too large for extension, so always download, fail if can't
 FORCE_NEWEST_CLI=1
 if [[ $FORCE_NEWEST_CLI = 1 ]]; then
-    wget https://appscan.ibmcloud.com/api/BlueMix/StaticAnalyzer/SAClientUtil?os=linux -O SAClientUtil.zip -o /dev/null
+    wget https://ui.appscan.ibmcloud.com/api/BlueMix/StaticAnalyzer/SAClientUtil?os=linux -O SAClientUtil.zip -o /dev/null
     unzip -o -qq SAClientUtil.zip
     if [ $? -eq 9 ]; then
         log_and_echo "$ERROR" "Unable to download SAClient"
