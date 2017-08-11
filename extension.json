@@ -54,6 +54,10 @@ export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
 export WAIT_TIME=#WAIT_TIME#
 export APPSCAN_APP_ID=#APPSCAN_APP_ID#
 
+echo ==============================
+echo APPSCAN_APP_ID=${APPSCAN_APP_ID}
+echo ==============================
+
 # OSSC line
 dpkg -l | grep '^ii' > $EXT_DIR/pkglist
 . $EXT_DIR/_init.sh
