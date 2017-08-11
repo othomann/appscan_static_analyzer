@@ -87,10 +87,9 @@ else
 . /tmp/appscan.txt
 fi
 
-export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
+#export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
+#echo APPSCAN_OPTS = ${APPSCAN_OPTS}
 
-echo APPSCAN_OPTS = ${APPSCAN_OPTS}
- 
 # helper function to print the end time for this script
 end_script_time() {
     SCRIPT_END_TIME=$(date +\"%s\")
@@ -101,8 +100,8 @@ end_script_time() {
 # Calls OTC api to determine if DRA is present.
 callOpenToolchainAPI
 
-echo ============ INSTALLED APPS ======================
 appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
+echo ============ INSTALLED APPS ======================
 appscan.sh list_apps
 echo ==================================================
 
@@ -111,7 +110,7 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
     if [[ $DEBUG -eq 1 ]]; then
        ${EXT_DIR}/appscan_check.py --debug
     else
-       ${EXT_DIR}/appscan_check.py
+       ${EXT_DIR}/appscan_check.py --debug
     fi
     RESULT=$?
 

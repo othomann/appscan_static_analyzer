@@ -100,7 +100,7 @@ def get_scanname_template (include_version=True):
 # given userid and password, attempt to authenticate to appscan for
 # future calls
 def appscan_login (userid, password):
-    proc = Popen(["appscan.sh api_login -u " + userid + " -P " + password + ""], 
+    proc = Popen(["appscan.sh api_login -u " + userid + " -P " + password + " -persist"], 
                       shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate();
 
