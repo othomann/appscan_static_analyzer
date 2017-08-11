@@ -168,7 +168,7 @@ def appscan_submit (filelist):
     for filename in filelist:
         submit_scanname = get_scanname_template() + str(index)
         proc = Popen(["appscan.sh queue_analysis -f " + filename +
-                      " -n " + submit_scanname + " -a " + os.environ.get(APPSCAN_APP_ID)], 
+                      " -n " + submit_scanname + " -a " + os.environ.get('APPSCAN_APP_ID')], 
                           shell=True, stdout=PIPE, stderr=PIPE)
         out, err = proc.communicate();
 
