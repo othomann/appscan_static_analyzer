@@ -17,18 +17,16 @@
 var fs = require('fs');
 var services = JSON.parse(fs.readFileSync(process.env.SERVICE_INSTANCE_FILE)).services;
 
-console.log(services);
-
 var appscan_service = findServiceInstance(services, process.env.SERVICE_INSTANCE);
 if (appscan_service) {
 	var appscan_id = appscan_service.parameters.name,
 		dashboard_url = appscan_service.parameters.dashboard_url,
-		user_login = appscan_service.parameters.user_login,
+		user_id = appscan_service.parameters.user_id,
 		user_token = appscan_service.parameters.user_token;
 	console.log('export APPSCAN_INSTANCE_NAME="' + appscan_id + '"');
 	console.log('export APPSCAN_SERVER_URL="' + dashboard_url + '"');
-	if (user_login) {
-		console.log('export APPSCAN_USER_ID="' + user_login + '"');
+	if (user_id) {
+		console.log('export APPSCAN_USER_ID="' + user_id + '"');
 	}
 	if (user_token) {
 		console.log('export APPSCAN_USER_TOKEN="' + user_token + '"');

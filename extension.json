@@ -73,8 +73,6 @@ else
 . /tmp/appscan.txt
 fi
 
-cat /tmp/appscan.txt
-
 export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
 
 # helper function to print the end time for this script
