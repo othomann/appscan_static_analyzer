@@ -21,6 +21,14 @@
             "desc_key": "SERVICE_INSTANCE_DESC"
         },
         {
+            "name" : "APPSCAN_APP_ID",
+            "type" : "Text",
+            "required" : "true",
+            "default_value" : "facfe9f0-e4d7-41e3-8ebb-a264760d5161",
+            "label_key" : "APPSCAN_APP_ID_KEY",
+            "desc_key" : "APPSCAN_APP_ID_DESC"
+        },
+        {
             "name": "WAIT_TIME",
             "type": "Text",
             "required": "false",
@@ -44,6 +52,8 @@ export INIT_START_TIME=$(date +\"%s\")
 export TOOLCHAIN_TOKEN PIPELINE_TOOLCHAIN_ID
 export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
 export WAIT_TIME=#WAIT_TIME#
+export APPSCAN_APP_ID=#APPSCAN_APP_ID#
+
 # OSSC line
 dpkg -l | grep '^ii' > $EXT_DIR/pkglist
 . $EXT_DIR/_init.sh
