@@ -148,8 +148,6 @@ fi
 
 echo ================== appscan-result.json      =======================
 cat ./appscan-result.json
-
-cat ${EXT_DIR}/appscan-result.json
 echo ================== appscan-result.json DONE =======================
 
 "
