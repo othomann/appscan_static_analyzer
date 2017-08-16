@@ -135,6 +135,7 @@ def appscan_prepare ():
         if "An IRX file was created, but it may be incomplete" in err:
             # some jar/war/ear files were not scannable, but some were.
             # attempt the submission
+            python_utils.LOGGER.warning(out)
             python_utils.LOGGER.warning("Not all files could be scanned, but the scan has been submitted for those which were")
         else:
             if python_utils.DEBUG:
