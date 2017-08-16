@@ -27,14 +27,6 @@
             "default_value" : "",
             "label_key" : "APPSCAN_APP_ID_KEY",
             "desc_key" : "APPSCAN_APP_ID_DESC"
-        },
-        {
-            "name": "WAIT_TIME",
-            "type": "Text",
-            "required": "false",
-            "default_value": "5",
-            "label_key": "WAIT_TIME_KEY",
-            "desc_key": "WAIT_TIME_DESC"
         }
     ],
     "outputs": [
@@ -51,7 +43,6 @@ set +e
 export INIT_START_TIME=$(date +\"%s\")
 export TOOLCHAIN_TOKEN PIPELINE_TOOLCHAIN_ID
 export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
-export WAIT_TIME=#WAIT_TIME#
 export APPSCAN_APP_ID=#APPSCAN_APP_ID#
 
 echo ==============================
