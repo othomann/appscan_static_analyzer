@@ -156,6 +156,12 @@ def appscan_prepare ():
 
     return newIrxFiles
 
+def send_job_id_to_insight (jobId)
+    python_utils.LOGGER.info("job id: " + jobId)
+    if os.environ.get('DRA_IS_PRESENT') == "1":
+        # upload_results_to_dra()
+        python_utils.LOGGER.info("DRA is present: " + jobId)
+
 # submit a created irx file to appscan for analysis
 def appscan_submit (filelist):
     if filelist==None:
@@ -182,6 +188,7 @@ def appscan_submit (filelist):
                 # done, if line isn't empty, is an id
                 scanlist.append(line)
                 python_utils.LOGGER.info("Job for file " + filename + " was submitted as scan " + submit_scanname + " and assigned id " + line)
+                send_job_id_to_insight(line)
             else:
                 # empty line, skip it
                 continue
