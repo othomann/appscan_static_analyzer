@@ -156,7 +156,7 @@ def appscan_prepare ():
 
     return newIrxFiles
 
-def send_job_id_to_insight (jobId)
+def send_job_id_to_insight (jobId):
     python_utils.LOGGER.info("job id: " + jobId)
     if os.environ.get('DRA_IS_PRESENT') == "1":
         # upload_results_to_dra()
