@@ -161,13 +161,20 @@ def send_job_id_to_toolint_broker (jobId):
     if os.environ.get('DRA_IS_PRESENT') == "1":
         # All information to send to the toolint-broker
         python_utils.LOGGER.info("DRA is present: " + jobId)
-        python_utils.LOGGER.info("LOGICAL_APP_NAME: " + os.environ.get('LOGICAL_APP_NAME'))
-        python_utils.LOGGER.info("BUILD_PREFIX: " + os.environ.get('BUILD_PREFIX'))
-        python_utils.LOGGER.info("TOOLCHAIN_TOKEN: " + os.environ.get('TOOLCHAIN_TOKEN'))
-        python_utils.LOGGER.info("ORGANIZATION_ID: " + os.environ.get('ORGANIZATION_ID'))
-        python_utils.LOGGER.info("TOOLCHAIN_ID: " + os.environ.get('TOOLCHAIN_ID'))
-        python_utils.LOGGER.info("BUILD_NUMBER: " + os.environ.get('BUILD_NUMBER'))
-        python_utils.LOGGER.info("BUILD_CONSOLE_URL: " + os.environ.get('BUILD_CONSOLE_URL'))
+        printVariable("LOGICAL_APP_NAME")
+        printVariable("BUILD_PREFIX")
+        printVariable("TOOLCHAIN_TOKEN")
+        printVariable("TOOLCHAIN_TOKEN")
+        printVariable("TOOLCHAIN_ID")
+        printVariable("BUILD_NUMBER")
+        printVariable("BUILD_CONSOLE_URL")
+
+def printVariable(str):
+    variable = os.environ.get(str);
+    if variable is None
+        python_utils.LOGGER.info("No value defined for " + str)
+    else
+        python_utils.LOGGER.info(str + str(variable))
 
 # submit a created irx file to appscan for analysis
 def appscan_submit (filelist):
