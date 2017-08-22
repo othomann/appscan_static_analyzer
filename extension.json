@@ -148,7 +148,6 @@ echo ================== appscan-result.json DONE =======================
 "
     }
     },
-    "project": "https://hub.jazz.net/project/alchemy/Alchemy-Ostanes",
-    "project_example": "https://hub.jazz.net/pipeline/rjminsha/ice-pipeline_demo",
-    "project_contact": "rjminsha@us.ibm.com"
+    "project": "https://github.com/othomann/appscan_static_analyzer.git",
+    "project_contact": "olivier_thomann@ca.ibm.com"
 }

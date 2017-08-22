@@ -161,13 +161,13 @@ def send_job_id_to_toolint_broker (jobId):
     if os.environ.get('DRA_IS_PRESENT') == "1":
         # All information to send to the toolint-broker
         python_utils.LOGGER.info("DRA is present: " + jobId)
-        python_utils.LOGGER.info("LOGICAL_APP_NAME: " + os.environment.get('LOGICAL_APP_NAME'))
-        python_utils.LOGGER.info("BUILD_PREFIX: " + os.environment.get('BUILD_PREFIX'))
-        python_utils.LOGGER.info("TOOLCHAIN_TOKEN: " + os.environment.get('TOOLCHAIN_TOKEN'))
-        python_utils.LOGGER.info("ORGANIZATION_ID: " + os.environment.get('ORGANIZATION_ID'))
-        python_utils.LOGGER.info("TOOLCHAIN_ID: " + os.environment.get('TOOLCHAIN_ID'))
-        python_utils.LOGGER.info("BUILD_NUMBER: " + os.environment.get('BUILD_NUMBER'))
-        python_utils.LOGGER.info("BUILD_CONSOLE_URL: " + os.environment.get('BUILD_CONSOLE_URL'))
+        python_utils.LOGGER.info("LOGICAL_APP_NAME: " + os.environ.get('LOGICAL_APP_NAME'))
+        python_utils.LOGGER.info("BUILD_PREFIX: " + os.environ.get('BUILD_PREFIX'))
+        python_utils.LOGGER.info("TOOLCHAIN_TOKEN: " + os.environ.get('TOOLCHAIN_TOKEN'))
+        python_utils.LOGGER.info("ORGANIZATION_ID: " + os.environ.get('ORGANIZATION_ID'))
+        python_utils.LOGGER.info("TOOLCHAIN_ID: " + os.environ.get('TOOLCHAIN_ID'))
+        python_utils.LOGGER.info("BUILD_NUMBER: " + os.environ.get('BUILD_NUMBER'))
+        python_utils.LOGGER.info("BUILD_CONSOLE_URL: " + os.environ.get('BUILD_CONSOLE_URL'))
 
 # submit a created irx file to appscan for analysis
 def appscan_submit (filelist):
