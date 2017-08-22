@@ -174,7 +174,7 @@ def printVariable(str):
     if variable is None :
         python_utils.LOGGER.info("No value defined for " + str)
     else:
-        python_utils.LOGGER.info(str + ": " + str(variable))
+        python_utils.LOGGER.info(str + ": " + variable)
 
 # submit a created irx file to appscan for analysis
 def appscan_submit (filelist):

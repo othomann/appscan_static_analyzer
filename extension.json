@@ -137,14 +137,6 @@ else
     exit 1
 fi
 
-echo ================== appscan-config.xml       =======================
-cat ./appscan-config.xml
-echo ================== appscan-result.json DONE =======================
-
-echo ================== appscan-result.json      =======================
-cat ./appscan-result.json
-echo ================== appscan-result.json DONE =======================
-
 "
     }
     },
