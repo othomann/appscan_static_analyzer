@@ -165,7 +165,7 @@ def send_job_id_to_toolint_broker (jobId):
         printVariable("BUILD_PREFIX")
         printVariable("TOOLCHAIN_TOKEN")
         printVariable("TOOLCHAIN_TOKEN")
-        printVariable("TOOLCHAIN_ID")
+        printVariable("PIPELINE_TOOLCHAIN_ID")
         printVariable("BUILD_NUMBER")
         printVariable("BUILD_CONSOLE_URL")
 
