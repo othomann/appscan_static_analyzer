@@ -171,10 +171,10 @@ def send_job_id_to_toolint_broker (jobId):
 
 def printVariable(str):
     variable = os.environ.get(str);
-    if variable is None
+    if variable is None :
         python_utils.LOGGER.info("No value defined for " + str)
-    else
-        python_utils.LOGGER.info(str + str(variable))
+    else:
+        python_utils.LOGGER.info(str + ": " + str(variable))
 
 # submit a created irx file to appscan for analysis
 def appscan_submit (filelist):
