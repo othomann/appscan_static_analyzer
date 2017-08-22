@@ -89,6 +89,10 @@ end_script_time() {
 }
 
 # Calls OTC api to determine if DRA is present.
+echo ============================ /tmp/tc_services.json ==========================
+cat /tmp/tc_services.json
+echo ============================ /tmp/tc_services.json ==========================
+
 callOpenToolchainAPI
 
 appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
