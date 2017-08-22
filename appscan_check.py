@@ -164,10 +164,24 @@ def send_job_id_to_toolint_broker (jobId):
         printVariable("LOGICAL_APP_NAME")
         printVariable("BUILD_PREFIX")
         printVariable("TOOLCHAIN_TOKEN")
-        printVariable("TOOLCHAIN_TOKEN")
         printVariable("PIPELINE_TOOLCHAIN_ID")
         printVariable("BUILD_NUMBER")
         printVariable("BUILD_CONSOLE_URL")
+        appscan_result_file = os.environ.get('EXT_DIR') + '/appscan-result.json'
+        appscan_result = {
+          'logical_app_name': os.environ.get('LOGICAL_APP_NAME'),
+          'toolchain_token': os.environ.get('TOOLCHAIN_TOKEN'), 
+          'toolchain_id': os.environ.get('PIPELINE_TOOLCHAIN_ID'),
+          'build_number': os.environ.get('BUILD_NUMBER'),
+          'organization_id' : os.environ.get('ORGANIZATION_GUID'),
+          'cf_controller' : os.environ.get('CF_CONTROLLER'),
+          'dra_server' : os.environ.get('DRA_SERVER'),
+          'dlms_server' : os.environ.get('DLMS_SERVER'),
+          'appscan_app_id' : os.environ.get('APPSCAN_APP_ID')
+        };
+        with open(appscan_result_file, 'w') as outfile:
+            json.dump(appscan_result, outfile, sort_keys = True)
+        # send the resulting jon to the toolint-broker
 
 def printVariable(str):
     variable = os.environ.get(str);

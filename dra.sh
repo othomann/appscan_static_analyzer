@@ -55,8 +55,9 @@ do
     export DRA_SUMMARY_FILE="$EXT_DIR/${zipFile%.zip}.json"
 
     # pass appscan report url to DRA
-    json=`cat ${DRA_SUMMARY_FILE}`
-    appscan_url=`python -c "import json; obj = json.loads('$json'); print( obj['url'] );"`
+    #json=`cat ${DRA_SUMMARY_FILE}`
+    #appscan_url=`python -c "import json; obj = json.loads('$json'); print( obj['url'] );"`
+    appscan_url="https://ui.appscan.ibmcloud.com/AsoCUI/serviceui/main/myapps/oneapp/$APPSCAN_APP_ID/scans"
 
     # Upload to DRA
 

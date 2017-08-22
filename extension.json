@@ -88,12 +88,13 @@ end_script_time() {
     log_and_echo \"$INFO\" \"Script runtime of `date -u -d @\"$SCRIPT_EST_TIME\" +\'%-Mm %-Ss\'`\"
 }
 
-# Calls OTC api to determine if DRA is present.
-echo ============================ /tmp/tc_services.json ==========================
-cat /tmp/tc_services.json
-echo ============================ /tmp/tc_services.json ==========================
-
-callOpenToolchainAPI
+node $EXT_DIR/set-dra-variables.js >/tmp/dra.txt
+if [ ! -s /tmp/dra.txt ]; then
+    echo \"Warning, DRA is not present\"
+else
+    echo \"DRA is present\"
+. /tmp/dra.txt
+fi
 
 appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
 echo ============ INSTALLED APPS ======================
@@ -108,6 +109,10 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
        ${EXT_DIR}/appscan_check.py --debug
     fi
     RESULT=$?
+    
+    echo \"===================== Contents of ${EXT_DIR}/appscan-result.json =============================== \"
+    cat ${EXT_DIR}/appscan-result.json
+    echo \"===================== Contents of ${EXT_DIR}/appscan-result.json =============================== \"
 
     if [ \"${ARCHIVE_DIR}\" == \"${WORKSPACE}\" ]; then 
         log_and_echo \"$INFO\" \"Achive directory is the working directory\"
