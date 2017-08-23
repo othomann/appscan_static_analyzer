@@ -27,7 +27,7 @@ if (dra_service) {
 	console.log('export CF_CONTROLLER=' + cf_controller);
 	console.log('export DRA_SERVER=' + dra_server);
 	console.log('export DLMS_SERVER=' + dlms_server);
-	console.log('export DRA_PRESENT=1');
+	console.log('export DRA_IS_PRESENT=1');
 }
 
 function findServiceInstance(services) {

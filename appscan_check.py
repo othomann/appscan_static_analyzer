@@ -177,11 +177,15 @@ def send_job_id_to_toolint_broker (jobId):
           'cf_controller' : os.environ.get('CF_CONTROLLER'),
           'dra_server' : os.environ.get('DRA_SERVER'),
           'dlms_server' : os.environ.get('DLMS_SERVER'),
-          'appscan_app_id' : os.environ.get('APPSCAN_APP_ID')
+          'appscan_app_id' : os.environ.get('APPSCAN_APP_ID'),
+          'job_id' : jobId,
+          'key_id' :  os.environ.get('APPSCAN_USER_ID'),
+          'key_secret' : os.environ.get('APPSCAN_USER_TOKEN')
         };
+        python_utils.LOGGER.info("Write file " + appscan_result_file + " on disk")
         with open(appscan_result_file, 'w') as outfile:
             json.dump(appscan_result, outfile, sort_keys = True)
-        # send the resulting jon to the toolint-broker
+        # send the resulting json to the toolint-broker to be stored in the cloudant db
 
 def printVariable(str):
     variable = os.environ.get(str);
