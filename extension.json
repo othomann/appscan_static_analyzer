@@ -78,6 +78,9 @@ else
 . /tmp/appscan.txt
 fi
 
+echo ========================= appscan service contents =============================
+cat /tmp/appscan.txt
+echo ========================= appscan service contents =============================
 #export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
 #echo APPSCAN_OPTS = ${APPSCAN_OPTS}
 
@@ -119,7 +122,7 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
     echo \"===================== Contents of ${EXT_DIR}/appscan-result.json =============================== \"
 
     if [ \"${ARCHIVE_DIR}\" == \"${WORKSPACE}\" ]; then 
-        log_and_echo \"$INFO\" \"Achive directory is the working directory\"
+        log_and_echo \"$INFO\" \"Archive directory is the working directory\"
     else 
         log_and_echo \"$INFO\" \"Archive directory is $ARCHIVE_DIR - copying all content to that directory\"
         pushd ${WORKSPACE} &> /dev/null

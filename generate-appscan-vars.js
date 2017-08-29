@@ -22,15 +22,13 @@ if (appscan_service) {
 	var appscan_id = appscan_service.parameters.name,
 		dashboard_url = appscan_service.parameters.dashboard_url,
 		user_id = appscan_service.parameters.user_id,
-		user_token = appscan_service.parameters.user_token;
+		user_token = appscan_service.parameters.user_token,
+		webhook_url = appscan_service.parameters.webhook_url;
 	console.log('export APPSCAN_INSTANCE_NAME="' + appscan_id + '"');
 	console.log('export APPSCAN_SERVER_URL="' + dashboard_url + '"');
-	if (user_id) {
-		console.log('export APPSCAN_USER_ID="' + user_id + '"');
-	}
-	if (user_token) {
-		console.log('export APPSCAN_USER_TOKEN="' + user_token + '"');
-	}
+	console.log('export APPSCAN_USER_ID="' + user_id + '"');
+	console.log('export APPSCAN_USER_TOKEN="' + user_token + '"');
+	console.log('export APPSCAN_WEBHOOK_URL="' + webhook_url + '"');
 }
 
 function findServiceInstance(services, serviceName) {
