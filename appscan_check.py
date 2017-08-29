@@ -169,18 +169,18 @@ def send_job_id_to_toolint_broker (jobId):
         printVariable("BUILD_CONSOLE_URL")
         appscan_result_file = os.environ.get('EXT_DIR') + '/appscan-result.json'
         appscan_result = {
-          'logical_app_name': os.environ.get('LOGICAL_APP_NAME'),
-          'toolchain_token': os.environ.get('TOOLCHAIN_TOKEN'), 
-          'toolchain_id': os.environ.get('PIPELINE_TOOLCHAIN_ID'),
-          'build_number': os.environ.get('BUILD_NUMBER'),
-          'organization_id' : os.environ.get('ORGANIZATION_GUID'),
-          'cf_controller' : os.environ.get('CF_CONTROLLER'),
-          'dra_server' : os.environ.get('DRA_SERVER'),
-          'dlms_server' : os.environ.get('DLMS_SERVER'),
           'appscan_app_id' : os.environ.get('APPSCAN_APP_ID'),
+          'build_number': os.environ.get('BUILD_NUMBER'),
+          'cf_controller' : os.environ.get('CF_CONTROLLER'),
+          'dlms_server' : os.environ.get('DLMS_SERVER'),
+          'dra_server' : os.environ.get('DRA_SERVER'),
           'job_id' : jobId,
           'key_id' :  os.environ.get('APPSCAN_USER_ID'),
-          'key_secret' : os.environ.get('APPSCAN_USER_TOKEN')
+          'key_secret' : os.environ.get('APPSCAN_USER_TOKEN'),
+          'logical_app_name': os.environ.get('LOGICAL_APP_NAME'),
+          'organization_id' : os.environ.get('ORGANIZATION_GUID'),
+          'toolchain_token': os.environ.get('TOOLCHAIN_TOKEN'),
+          'toolchain_id': os.environ.get('PIPELINE_TOOLCHAIN_ID'),
         };
         python_utils.LOGGER.info("Write file " + appscan_result_file + " on disk")
         with open(appscan_result_file, 'w') as outfile:
