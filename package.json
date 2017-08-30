@@ -1,0 +1,14 @@
+{
+  "name": "organization-name",
+  "version": "0.0.1",
+  "description": "Task to get organization name",
+  "dependencies": {
+    "request-promise": "latest",
+    "request": "latest",
+    "fs": "latest"
+  },
+  "engines": {
+    "node": "^4.0.0"
+  },
+  "main": "getorg_name.js"
+}

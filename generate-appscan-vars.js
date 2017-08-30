@@ -19,12 +19,14 @@ var services = JSON.parse(fs.readFileSync(process.env.SERVICE_INSTANCE_FILE)).se
 
 var appscan_service = findServiceInstance(services, process.env.SERVICE_INSTANCE);
 if (appscan_service) {
-	var appscan_id = appscan_service.parameters.name,
+	var appscan_name = appscan_service.parameters.name,
 		dashboard_url = appscan_service.parameters.dashboard_url,
 		user_id = appscan_service.parameters.user_id,
 		user_token = appscan_service.parameters.user_token,
-		webhook_url = appscan_service.parameters.webhook_url;
-	console.log('export APPSCAN_INSTANCE_NAME="' + appscan_id + '"');
+		webhook_url = appscan_service.parameters.webhook_url,
+		appscan_service_id = appscan_service.service_instance_id;
+	console.log('export APPSCAN_INSTANCE_NAME="' + appscan_name + '"');
+	console.log('export APPSCAN_SERVICE_ID="' + appscan_service_id + '"');
 	console.log('export APPSCAN_SERVER_URL="' + dashboard_url + '"');
 	console.log('export APPSCAN_USER_ID="' + user_id + '"');
 	console.log('export APPSCAN_USER_TOKEN="' + user_token + '"');

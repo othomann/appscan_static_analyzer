@@ -120,6 +120,9 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
     echo \"===================== Contents of ${EXT_DIR}/appscan-result.json =============================== \"
     cat ${EXT_DIR}/appscan-result.json
     echo \"===================== Contents of ${EXT_DIR}/appscan-result.json =============================== \"
+    
+    npm install
+    node $EXT_DIR/getorg_name.js $EXT_DIR//appscan-result.json
 
     if [ \"${ARCHIVE_DIR}\" == \"${WORKSPACE}\" ]; then 
         log_and_echo \"$INFO\" \"Archive directory is the working directory\"
