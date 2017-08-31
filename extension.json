@@ -78,9 +78,6 @@ else
 . /tmp/appscan.txt
 fi
 
-echo ========================= appscan service contents =============================
-cat /tmp/appscan.txt
-echo ========================= appscan service contents =============================
 #export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
 #echo APPSCAN_OPTS = ${APPSCAN_OPTS}
 
@@ -99,15 +96,6 @@ else
 . /tmp/dra.txt
 fi
 
-echo ============================ /tmp/tc_services.json ==========================
-cat /tmp/tc_services.json
-echo ============================ /tmp/tc_services.json ==========================
-
-appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
-echo ============ INSTALLED APPS ======================
-appscan.sh list_apps
-echo ==================================================
-
 # run the python IBM Security Static Analyzer checker, dump results on output
 if [ -f ${EXT_DIR}/appscan_check.py ]; then 
     if [[ $DEBUG -eq 1 ]]; then
@@ -116,13 +104,6 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
        ${EXT_DIR}/appscan_check.py --debug
     fi
     RESULT=$?
-    
-    echo \"===================== Contents of ${EXT_DIR}/appscan-result.json =============================== \"
-    cat ${EXT_DIR}/appscan-result.json
-    echo \"===================== Contents of ${EXT_DIR}/appscan-result.json =============================== \"
-    
-    npm install
-    node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result.json
 
     if [ \"${ARCHIVE_DIR}\" == \"${WORKSPACE}\" ]; then 
         log_and_echo \"$INFO\" \"Archive directory is the working directory\"
