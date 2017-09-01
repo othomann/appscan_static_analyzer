@@ -19,9 +19,13 @@ var fs = require("fs"),
 var fileName = process.argv[2];
 var config = JSON.parse(fs.readFileSync(fileName));
 
+var toolchainToken = process.env.TOOLCHAIN_TOKEN;
+if (!toolchainToken) {
+	toolchainToken = config.toolchain_token;
+}
 var rq = {
 	method: 'GET',
-	url: process.env.CF_CONTROLLER + "/v2/organizations/" + config.organization_id + "/summary",
+	url: config.cf_controller + "/v2/organizations/" + config.organization_id + "/summary",
 	json: true,
 	headers: {
 		'Authorization': process.env.TOOLCHAIN_TOKEN,
@@ -33,7 +37,8 @@ var rq = {
 return request_promise(rq)
 	.then(function(result) {
 		config.organization_name = result.name;
-		fs.writeFileSync(fileName, config, "UTF-8");
+		fs.writeFileSync(fileName, JSON.stringify(config), "UTF-8");
 	})
-	.catch(function() {
+	.catch(function(err) {
+		console.log('could not retrieve organization name: ' + err);
 	});

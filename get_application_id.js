@@ -14,12 +14,12 @@
  ********************************************************************************/
 /*eslint-env node */
 var fs = require('fs');
-var contents = fs.readFileSync(process.argv[2]);
+var list_app_names = fs.readFileSync(process.argv[2]);
+var app_name = process.argv[3];
 var fileName = process.argv[4];
 var config = JSON.parse(fs.readFileSync(fileName));
-var app_name = process.argv[3];
 
-var lines = contents.toString('UTF-8').split(/\r\n|\n/);
+var lines = list_app_names.toString('UTF-8').split(/\r\n|\n/);
 for(var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
 	var line = lines[lineIndex];
 	var index = line.lastIndexOf('[');
@@ -29,7 +29,7 @@ for(var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
 			var app_id = line.substr(index + 1).trim();
 			app_id = app_id.substring(0, app_id.indexOf(']')).trim();
 			config.appscan_app_id=app_id;
-			fs.writeFileSync(fileName, config, "UTF-8");
+			fs.writeFileSync(fileName, JSON.stringify(config), "UTF-8");
 		}
 	}
 }
