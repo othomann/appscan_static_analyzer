@@ -21,12 +21,12 @@
             "desc_key": "SERVICE_INSTANCE_DESC"
         },
         {
-            "name" : "APPSCAN_APP_ID",
+            "name" : "APPSCAN_APP_NAME",
             "type" : "Text",
             "required" : "true",
             "default_value" : "",
-            "label_key" : "APPSCAN_APP_ID_KEY",
-            "desc_key" : "APPSCAN_APP_ID_DESC"
+            "label_key" : "APPSCAN_APP_NAME_KEY",
+            "desc_key" : "APPSCAN_APP_NAME_DESC"
         }
     ],
     "outputs": [
@@ -43,7 +43,7 @@ set +e
 export INIT_START_TIME=$(date +\"%s\")
 export TOOLCHAIN_TOKEN PIPELINE_TOOLCHAIN_ID
 export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
-export APPSCAN_APP_ID=#APPSCAN_APP_ID#
+export APPSCAN_APP_NAME=#APPSCAN_APP_NAME#
 
 # OSSC line
 dpkg -l | grep '^ii' > $EXT_DIR/pkglist
@@ -74,9 +74,6 @@ else
 . /tmp/appscan.txt
 fi
 
-#export APPSCAN_OPTS=-DBLUEMIX_SERVER=${APPSCAN_SERVER_URL}
-#echo APPSCAN_OPTS = ${APPSCAN_OPTS}
-
 # helper function to print the end time for this script
 end_script_time() {
     SCRIPT_END_TIME=$(date +\"%s\")
@@ -91,6 +88,11 @@ else
     echo \"DRA is present\"
 . /tmp/dra.txt
 fi
+
+appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
+echo ============ INSTALLED APPS ======================
+appscan.sh list_apps > /tmp/appscan_list_apps.txt
+echo ==================================================
 
 # run the python IBM Security Static Analyzer checker, dump results on output
 if [ -f ${EXT_DIR}/appscan_check.py ]; then 
@@ -117,15 +119,27 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         tar -xf source.tar 
         rm source.tar 
         popd &> /dev/null
-    fi 
+    fi
 
     if [ $RESULT -ne 0 ]; then
         log_and_echo \"$ERROR\" \"Error running IBM Security Static Analyzer\"
         end_script_time
         exit 1
     else
+        export CURRENT_DIR=`pwd`
+        cd $EXT_DIR
+        # need to be in EXT_DIR to get the package.json file
+        npm install
+        cd $CURRENT_DIR
+        node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt $APPSCAN_APP_NAME $EXT_DIR/appscan-result.json
+        node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result.json
+        echo ============ INSTALLED APPS ======================
+        cat $EXT_DIR/appscan-result.json
+        echo ==================================================
+        echo \"Push appscan-result.json to toolint-broker using the appscan webhook\"
+        echo $APPSCAN_WEBHOOK_URL
         log_and_echo \"$SUCCESSFUL\" \"Application scan was successful\"
-    fi  
+    fi
 else 
     log_and_echo \"$ERROR\" \"IBM Security Static Analyzer helper script not available, failed.\"
     ${EXT_DIR}/utilities/sendMessage.sh -l good -m \"IBM Security Static Analyzer helper script not available, failed.\"

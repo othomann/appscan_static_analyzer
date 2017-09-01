@@ -163,7 +163,6 @@ def send_job_id_to_toolint_broker (jobId):
         python_utils.LOGGER.info("DRA is present: " + jobId)
         appscan_result_file = os.environ.get('EXT_DIR') + '/appscan-result.json'
         appscan_result = {
-          'appscan_app_id' : os.environ.get('APPSCAN_APP_ID'),
           'appscan_service_id' : os.environ.get('APPSCAN_SERVICE_ID'),
           'build_number': os.environ.get('BUILD_NUMBER'),
           'cf_controller' : os.environ.get('CF_CONTROLLER'),
