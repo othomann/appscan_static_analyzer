@@ -93,6 +93,14 @@ appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
 echo ============ INSTALLED APPS ======================
 appscan.sh list_apps > /tmp/appscan_list_apps.txt
 echo ==================================================
+node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt $APPSCAN_APP_NAME > /tmp/application_id.txt
+
+if [ ! -s /tmp/application_id.txt ]; then
+    echo \"Error, Could not get application id for the application name $APPSCAN_APP_NAME\"
+    exit 1
+else
+. /tmp/application_id.txt
+fi
 
 # run the python IBM Security Static Analyzer checker, dump results on output
 if [ -f ${EXT_DIR}/appscan_check.py ]; then 
