@@ -88,7 +88,9 @@ fi
 
 appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
 appscan.sh list_apps > /tmp/appscan_list_apps.txt
-node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt \"$APPSCAN_APP_NAME\" > /tmp/application_id.txt
+cat /tmp/appscan_list_apps.txt
+echo \"APPSCAN_APP_NAME=>$APPSCAN_APP_NAME<\"
+node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt \"\"$APPSCAN_APP_NAME\"\" > /tmp/application_id.txt
 
 if [ ! -s /tmp/application_id.txt ]; then
     echo \"Error, Could not get application id for the application name $APPSCAN_APP_NAME\"

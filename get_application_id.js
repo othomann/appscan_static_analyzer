@@ -16,7 +16,7 @@
 var fs = require('fs');
 var list_app_names = fs.readFileSync(process.argv[2]);
 var app_name = process.argv[3];
-
+console.log("app_name=>" + app_name + "<");
 function scan_app_names(lines) {
 	for(var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
 		var line = lines[lineIndex];
