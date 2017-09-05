@@ -146,7 +146,7 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         else
         . /tmp/job_id.txt
         fi
-        echo -e "${green}The job id to use for the deploy to DRA step: ${JOB_ID}${no_color}"
+        echo -e \"${green}The job id to use for the deploy to DRA step: ${JOB_ID}${no_color}\"
         log_and_echo \"$SUCCESSFUL\" \"Application scan was successful\"
     fi
 else 
