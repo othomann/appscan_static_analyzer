@@ -17,16 +17,21 @@ var fs = require('fs');
 var list_app_names = fs.readFileSync(process.argv[2]);
 var app_name = process.argv[3];
 
-var lines = list_app_names.toString('UTF-8').split(/\r\n|\n/);
-for(var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-	var line = lines[lineIndex];
-	var index = line.lastIndexOf('[');
-	var possible_app_name = line.substr(0, index).trim();
-	if (app_name) {
-		if (app_name === possible_app_name) {
-			var app_id = line.substr(index + 1).trim();
-			app_id = app_id.substring(0, app_id.indexOf(']')).trim();
-			console.log("export APPSCAN_APP_ID=" + app_id);
+function scan_app_names(lines) {
+	for(var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+		var line = lines[lineIndex];
+		var index = line.lastIndexOf('[');
+		var possible_app_name = line.substr(0, index).trim();
+		if (app_name) {
+			if (app_name === possible_app_name) {
+				var app_id = line.substr(index + 1).trim();
+				app_id = app_id.substring(0, app_id.indexOf(']')).trim();
+				console.log("export APPSCAN_APP_ID=" + app_id);
+				return;
+			}
 		}
 	}
 }
+var lines = list_app_names.toString('UTF-8').split(/\r\n|\n/);
+
+scan_app_names(lines);

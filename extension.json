@@ -82,16 +82,13 @@ end_script_time() {
 }
 
 node $EXT_DIR/set-dra-variables.js >/tmp/dra.txt
-if [ ! -s /tmp/dra.txt ]; then
-    echo \"Warning, DRA is not present\"
-else
-    echo \"DRA is present\"
+if [ -s /tmp/dra.txt ]; then
 . /tmp/dra.txt
 fi
 
 appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
 appscan.sh list_apps > /tmp/appscan_list_apps.txt
-node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt $APPSCAN_APP_NAME > /tmp/application_id.txt
+node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt \"$APPSCAN_APP_NAME\" > /tmp/application_id.txt
 
 if [ ! -s /tmp/application_id.txt ]; then
     echo \"Error, Could not get application id for the application name $APPSCAN_APP_NAME\"
@@ -137,7 +134,6 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         # need to be in EXT_DIR to get the package.json file
         npm install
         cd $CURRENT_DIR
-        node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt $APPSCAN_APP_NAME $EXT_DIR/appscan-result.json
         node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result.json
         node $EXT_DIR/display_job_name.js $EXT_DIR/appscan-result.json > /tmp/job_id.txt
         if [ ! -s /tmp/job_id.txt ]; then
