@@ -90,9 +90,7 @@ else
 fi
 
 appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
-echo ============ INSTALLED APPS ======================
 appscan.sh list_apps > /tmp/appscan_list_apps.txt
-echo ==================================================
 node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt $APPSCAN_APP_NAME > /tmp/application_id.txt
 
 if [ ! -s /tmp/application_id.txt ]; then
@@ -141,11 +139,7 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         cd $CURRENT_DIR
         node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt $APPSCAN_APP_NAME $EXT_DIR/appscan-result.json
         node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result.json
-        echo ============ INSTALLED APPS ======================
-        cat $EXT_DIR/appscan-result.json
-        echo ==================================================
-        echo \"Push appscan-result.json to toolint-broker using the appscan webhook\"
-        echo $APPSCAN_WEBHOOK_URL
+        echo -e "${green}`node display_job_name.js $EXT_DIR/appscan-result.json`${no_color}"
         log_and_echo \"$SUCCESSFUL\" \"Application scan was successful\"
     fi
 else 
