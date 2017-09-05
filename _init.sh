@@ -152,16 +152,6 @@ export PATH=$APPSCAN_INSTALL_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$APPSCAN_INSTALL_DIR/bin:$LD_LIBRARY_PATH
 echo `appscan.sh version`
 
-############################
-# setup DRA                #
-############################
-pushd $EXT_DIR >/dev/null
-git clone https://github.com/jparra5/dra_utilities.git dra_utilities
-popd >/dev/null
-
-# Call common initialization
-source $EXT_DIR/dra_utilities/init.sh
-
 log_and_echo "$LABEL" "Initialization complete"
 
 export TOOLCHAINS_API=https://$( echo $IDS_URL | sed 's!^.*//\([^/]*\)/.*$!\1!g'  | sed 's!devops!devops-api!g' )/v1/toolchains

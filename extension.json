@@ -139,7 +139,7 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         cd $CURRENT_DIR
         node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt $APPSCAN_APP_NAME $EXT_DIR/appscan-result.json
         node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result.json
-        node display_job_name.js $EXT_DIR/appscan-result.json > /tmp/job_id.txt
+        node $EXT_DIR/display_job_name.js $EXT_DIR/appscan-result.json > /tmp/job_id.txt
         if [ ! -s /tmp/job_id.txt ]; then
            echo \"Error, could not extract job id\"
            exit 1
