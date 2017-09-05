@@ -43,7 +43,8 @@ set +e
 export INIT_START_TIME=$(date +\"%s\")
 export TOOLCHAIN_TOKEN PIPELINE_TOOLCHAIN_ID
 export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
-export APPSCAN_APP_NAME=#APPSCAN_APP_NAME#
+export APPSCAN_APP_NAME=\"#APPSCAN_APP_NAME#\"
+echo \"APPSCAN_APP_NAME=>$APPSCAN_APP_NAME<\"
 
 # OSSC line
 dpkg -l | grep '^ii' > $EXT_DIR/pkglist
@@ -88,9 +89,7 @@ fi
 
 appscan.sh api_login -u ${APPSCAN_USER_ID} -P ${APPSCAN_USER_TOKEN}
 appscan.sh list_apps > /tmp/appscan_list_apps.txt
-cat /tmp/appscan_list_apps.txt
-echo \"APPSCAN_APP_NAME=>$APPSCAN_APP_NAME<\"
-node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt \"\"$APPSCAN_APP_NAME\"\" > /tmp/application_id.txt
+node $EXT_DIR/get_application_id.js /tmp/appscan_list_apps.txt \"$APPSCAN_APP_NAME\" > /tmp/application_id.txt
 
 if [ ! -s /tmp/application_id.txt ]; then
     echo \"Error, Could not get application id for the application name $APPSCAN_APP_NAME\"
