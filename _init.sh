@@ -108,8 +108,6 @@ if [ -n "$BUILD_OFFSET" ]; then
     export BUILD_NUMBER=$(echo "$BUILD_NUMBER + $BUILD_OFFSET" | bc)
 fi 
 
-log_and_echo "$INFO" "APPLICATION_VERSION: $APPLICATION_VERSION"
-
 ################################
 # Setup archive information    #
 ################################
