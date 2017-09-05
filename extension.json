@@ -44,7 +44,6 @@ export INIT_START_TIME=$(date +\"%s\")
 export TOOLCHAIN_TOKEN PIPELINE_TOOLCHAIN_ID
 export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
 export APPSCAN_APP_NAME=\"#APPSCAN_APP_NAME#\"
-echo \"APPSCAN_APP_NAME=>$APPSCAN_APP_NAME<\"
 
 # OSSC line
 dpkg -l | grep '^ii' > $EXT_DIR/pkglist
