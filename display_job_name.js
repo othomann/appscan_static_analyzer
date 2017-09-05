@@ -18,4 +18,4 @@ var fs = require("fs");
 var fileName = process.argv[2];
 var config = JSON.parse(fs.readFileSync(fileName));
 
-console.log("The job id to use for the deploy to DRA step: " + config.job_id);
+console.log("export JOB_ID=" + config.job_id);
