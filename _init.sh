@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #********************************************************************************
-# Copyright 2015 IBM
+# Copyright 2015, 2017 IBM
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -151,6 +151,16 @@ cd $cur_dir
 export PATH=$APPSCAN_INSTALL_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$APPSCAN_INSTALL_DIR/bin:$LD_LIBRARY_PATH
 echo `appscan.sh version`
+
+############################
+# setup DRA                #
+############################
+pushd $EXT_DIR >/dev/null
+git clone https://github.com/jparra5/dra_utilities.git dra_utilities
+popd >/dev/null
+
+# Call common initialization
+source $EXT_DIR/dra_utilities/init.sh
 
 log_and_echo "$LABEL" "Initialization complete"
 

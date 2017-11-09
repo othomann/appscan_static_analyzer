@@ -27,6 +27,14 @@
             "default_value" : "",
             "label_key" : "APPSCAN_APP_NAME_KEY",
             "desc_key" : "APPSCAN_APP_NAME_DESC"
+        },
+        {
+            "name": "WAIT_TIME",
+            "type": "Text",
+            "required": "false",
+            "default_value": "5",
+            "label_key": "WAIT_TIME_KEY",
+            "desc_key": "WAIT_TIME_DESC"
         }
     ],
     "outputs": [
@@ -44,7 +52,7 @@ export INIT_START_TIME=$(date +\"%s\")
 export TOOLCHAIN_TOKEN PIPELINE_TOOLCHAIN_ID
 export SERVICE_INSTANCE=\"#SERVICE_INSTANCE#\"
 export APPSCAN_APP_NAME=\"#APPSCAN_APP_NAME#\"
-
+export WAIT_TIME=#WAIT_TIME#
 # OSSC line
 dpkg -l | grep '^ii' > $EXT_DIR/pkglist
 . $EXT_DIR/_init.sh
@@ -81,6 +89,7 @@ end_script_time() {
     log_and_echo \"$INFO\" \"Script runtime of `date -u -d @\"$SCRIPT_EST_TIME\" +\'%-Mm %-Ss\'`\"
 }
 
+# Determine if DRA is present.
 node $EXT_DIR/set-dra-variables.js >/tmp/dra.txt
 if [ -s /tmp/dra.txt ]; then
 . /tmp/dra.txt
@@ -102,7 +111,7 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
     if [[ $DEBUG -eq 1 ]]; then
        ${EXT_DIR}/appscan_check.py --debug
     else
-       ${EXT_DIR}/appscan_check.py --debug
+       ${EXT_DIR}/appscan_check.py
     fi
     RESULT=$?
 
