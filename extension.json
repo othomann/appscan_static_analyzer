@@ -143,8 +143,8 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         # need to be in EXT_DIR to get the package.json file
         npm install
         cd $CURRENT_DIR
-        node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result.json
-        node $EXT_DIR/display_job_name.js $EXT_DIR/appscan-result.json > /tmp/job_id.txt
+        node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result-toolint.json
+        node $EXT_DIR/display_job_name.js $EXT_DIR/appscan-result-toolint.json > /tmp/job_id.txt
         if [ ! -s /tmp/job_id.txt ]; then
            echo \"Error, could not extract job id\"
            exit 1
