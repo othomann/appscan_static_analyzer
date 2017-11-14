@@ -77,6 +77,7 @@ def print_help ():
 # "<scanname>-<version>-" where scanname comes from env var 
 # 'SUBMISSION_NAME', and version comes from env var 'APPLICATION_VERSION'
 def get_scanname_template (include_version=True):
+    python_utils.LOGGER.info("get_scanname_template")
     # check the env for name of the scan, else use default
     if os.environ.get('SUBMISSION_NAME'):
         scanname=os.environ.get('SUBMISSION_NAME')
@@ -92,6 +93,7 @@ def get_scanname_template (include_version=True):
 
     scanname = scanname + "-"
 
+    python_utils.LOGGER.info("scanname: " + scanname)
     return scanname
 
 # given userid and password, attempt to authenticate to appscan for
@@ -161,7 +163,7 @@ def send_job_id_to_toolint_broker (jobId):
     if os.environ.get('DRA_IS_PRESENT') == "1":
         # All information to send to the toolint-broker
         python_utils.LOGGER.info("DRA is present: " + jobId)
-        appscan_result_file = os.environ.get('EXT_DIR') + '/appscan-result.json'
+        appscan_result_file = os.environ.get('EXT_DIR') + '/appscan-result-toolint.json'
         appscan_result = {
           'appscan_app_id' : os.environ.get('APPSCAN_APP_ID'),
           'appscan_service_id' : os.environ.get('APPSCAN_SERVICE_ID'),
@@ -227,6 +229,7 @@ def appscan_submit (filelist):
 
 # get appscan list of current jobs
 def appscan_list ():
+    python_utils.LOGGER.info("appscan_list")
     proc = Popen(["appscan.sh list"], 
                       shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate();
@@ -601,6 +604,7 @@ def upload_results_to_dra ():
 # new submission.  for the key, we use the job name, compared to the
 # name template as per get_scanname_template()
 def check_for_existing_job ( ignore_older_jobs = True):
+    python_utils.LOGGER.info("check_for_existing_job")
     alljobs = appscan_list()
     if alljobs == None:
         # no jobs, ours can't be there
@@ -796,6 +800,7 @@ try:
 
     # if checkstate, don't really do a scan, just check state of current outstanding ones
     if parsed_args['checkstate']:
+        python_utils.LOGGER.info("checkstate")
         # for checkstate, don't wait, just check current
         python_utils.WAIT_TIME = 0
         # see if we have related jobs
@@ -807,6 +812,7 @@ try:
         # if the job we would run is already up (and either pending or complete),
         # we just want to get state (and wait for it if needed), not create a whole
         # new submission
+        python_utils.LOGGER.info("check_for_existing_job")
         joblist = check_for_existing_job()
         if joblist == None:
             python_utils.LOGGER.info("Scanning for code submission")
