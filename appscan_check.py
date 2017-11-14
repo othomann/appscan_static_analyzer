@@ -246,7 +246,7 @@ def appscan_list ():
         else:
             # empty line, skip it
             continue
-    python_utils.LOGGER.info("Analysis jobs found: " + str(scanlist))
+    python_utils.LOGGER.info("{} analysis jobs found: {}".format(len(scanlist), str(scanlist)))
     return scanlist
 
 # translate a job state to a pretty name
