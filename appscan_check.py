@@ -242,7 +242,8 @@ def appscan_list ():
             return []
         elif line:
             # done, if line isn't empty, is an id
-            scanlist.append(line)
+            #scanlist.append(line)
+            appscan_cancel(line)
         else:
             # empty line, skip it
             continue
