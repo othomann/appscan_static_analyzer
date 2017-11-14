@@ -349,12 +349,14 @@ def appscan_status (jobid):
 
 # cancel an appscan job
 def appscan_cancel (jobid):
+     python_utils.LOGGER.info("appscan_cancel: " + str(jobid))
     if jobid == None:
         return
 
     proc = Popen(["appscan.sh cancel -i " + str(jobid)], 
                       shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate();
+    python_utils.LOGGER.info("end of appscan_cancel: " + str(jobid))
 
 # parse a key=value line, return value
 def parse_key_eq_val (line):
