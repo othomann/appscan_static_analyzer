@@ -238,7 +238,7 @@ def appscan_list ():
     for line in out.splitlines() :
         if "No analysis jobs" in line:
             # no jobs, return empty list
-            python_utils.LOGGER.debug("No analysis jobs found")
+            python_utils.LOGGER.info("No analysis jobs found")
             return []
         elif line:
             # done, if line isn't empty, is an id
@@ -246,7 +246,7 @@ def appscan_list ():
         else:
             # empty line, skip it
             continue
-    python_utils.LOGGER.debug("Analysis jobs found: " + str(scanlist))
+    python_utils.LOGGER.info("Analysis jobs found: " + str(scanlist))
     return scanlist
 
 # translate a job state to a pretty name
@@ -390,6 +390,7 @@ def parse_key_eq_val (line):
 # a dict containing fields for "NLowIssues", "ReadStatus", et al
 # per the list above
 def appscan_info (jobid):
+    python_utils.LOGGER.info("appscan_info: " + jobid)
 
     # setup default (empty) return
     return_info = {}
@@ -560,6 +561,7 @@ def appscan_info (jobid):
                 else:
                     return_info['EnableMailNotifications'] = False
 
+    python_utils.LOGGER.info("return_info: " + str(return_info))
     return return_info
 
 # get the result file for a given job
