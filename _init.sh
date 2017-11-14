@@ -136,7 +136,7 @@ cd ${EXT_DIR}
 #CLI is too large for extension, so always download, fail if can't
 FORCE_NEWEST_CLI=1
 if [[ $FORCE_NEWEST_CLI = 1 ]]; then
-    wget https://ui.appscan.ibmcloud.com/api/BlueMix/StaticAnalyzer/SAClientUtil?os=linux -O SAClientUtil.zip -o /dev/null
+    wget https://appscan.ibmcloud.com/api/SCX/StaticAnalyzer/SAClientUtil?os=linux -O SAClientUtil.zip -o /dev/null
     unzip -o -qq SAClientUtil.zip
     if [ $? -eq 9 ]; then
         log_and_echo "$ERROR" "Unable to download SAClient"
