@@ -77,7 +77,6 @@ def print_help ():
 # "<scanname>-<version>-" where scanname comes from env var 
 # 'SUBMISSION_NAME', and version comes from env var 'APPLICATION_VERSION'
 def get_scanname_template (include_version=True):
-    python_utils.LOGGER.info("get_scanname_template")
     # check the env for name of the scan, else use default
     if os.environ.get('SUBMISSION_NAME'):
         scanname=os.environ.get('SUBMISSION_NAME')
@@ -93,7 +92,6 @@ def get_scanname_template (include_version=True):
 
     scanname = scanname + "-"
 
-    python_utils.LOGGER.info("scanname: " + scanname)
     return scanname
 
 # given userid and password, attempt to authenticate to appscan for
@@ -229,7 +227,6 @@ def appscan_submit (filelist):
 
 # get appscan list of current jobs
 def appscan_list ():
-    python_utils.LOGGER.info("appscan_list")
     proc = Popen(["appscan.sh list"], 
                       shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate();
@@ -242,8 +239,7 @@ def appscan_list ():
             return []
         elif line:
             # done, if line isn't empty, is an id
-            #scanlist.append(line)
-            appscan_cancel(line)
+            scanlist.append(line)
         else:
             # empty line, skip it
             continue
@@ -349,14 +345,12 @@ def appscan_status (jobid):
 
 # cancel an appscan job
 def appscan_cancel (jobid):
-    python_utils.LOGGER.info("appscan_cancel: " + str(jobid))
     if jobid == None:
         return
 
     proc = Popen(["appscan.sh cancel -i " + str(jobid)], 
                       shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate()
-    python_utils.LOGGER.info("end of appscan_cancel: " + str(jobid))
 
 # parse a key=value line, return value
 def parse_key_eq_val (line):
@@ -393,7 +387,6 @@ def parse_key_eq_val (line):
 # a dict containing fields for "NLowIssues", "ReadStatus", et al
 # per the list above
 def appscan_info (jobid):
-    python_utils.LOGGER.info("appscan_info: " + jobid)
 
     # setup default (empty) return
     return_info = {}
@@ -564,7 +557,6 @@ def appscan_info (jobid):
                 else:
                     return_info['EnableMailNotifications'] = False
 
-    python_utils.LOGGER.info("return_info: " + str(return_info))
     return return_info
 
 # get the result file for a given job
@@ -609,7 +601,6 @@ def upload_results_to_dra ():
 # new submission.  for the key, we use the job name, compared to the
 # name template as per get_scanname_template()
 def check_for_existing_job ( ignore_older_jobs = True):
-    python_utils.LOGGER.info("check_for_existing_job")
     alljobs = appscan_list()
     if alljobs == None:
         # no jobs, ours can't be there
@@ -796,70 +787,31 @@ try:
     python_utils.LOGGER.info("Connecting to Static Analysis service")
     appscan_login(os.environ.get('APPSCAN_USER_ID'),os.environ.get('APPSCAN_USER_TOKEN'))
 
-    # allow testing connection without full job scan and submission
-    if parsed_args['loginonly']:
-        python_utils.LOGGER.info("LoginOnly set, login complete, exiting")
+    # if the job we would run is already up (and either pending or complete),
+    # we just want to get state (and wait for it if needed), not create a whole
+    # new submission
+    python_utils.LOGGER.info("Scanning for code submission")
+    files_to_submit = appscan_prepare()
+    python_utils.LOGGER.info("Submitting scans for analysis")
+    joblist, errMsg = appscan_submit(files_to_submit)
+    if (not joblist) or len(joblist) < len(files_to_submit):
+        if (not errMsg):
+            errMsg = "Check status of existing scans."
+        #Error, we didn't return as many jobs as we should have
+        dash = os.environ.get('APPSCAN_SERVER_URL')
+        if os.path.isfile("%s/utilities/sendMessage.sh" % python_utils.EXT_DIR):
+            command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> could not successfully submit scan.  {errMsg}\"'.format(path=python_utils.EXT_DIR,url=dash,errMsg=errMsg)
+            proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
+            out, err = proc.communicate();
+            python_utils.LOGGER.debug(out)
+        python_utils.LOGGER.error('ERROR: could not successfully submit scan. {errMsg} {url}'.format(url=dash,errMsg=errMsg))
         endtime = timeit.default_timer()
         print "Script completed in " + str(endtime - python_utils.SCRIPT_START_TIME) + " seconds"
-        sys.exit(0)
-
-    # if checkstate, don't really do a scan, just check state of current outstanding ones
-    if parsed_args['checkstate']:
-        python_utils.LOGGER.info("checkstate")
-        # for checkstate, don't wait, just check current
-        python_utils.WAIT_TIME = 0
-        # see if we have related jobs
-        joblist = check_for_existing_job()
-        if joblist == None:
-            # no related jobs, get whole list
-            joblist = appscan_list()
-    else:
-        # if the job we would run is already up (and either pending or complete),
-        # we just want to get state (and wait for it if needed), not create a whole
-        # new submission
-        python_utils.LOGGER.info("check_for_existing_job")
-        joblist = check_for_existing_job()
-        if joblist == None:
-            python_utils.LOGGER.info("Scanning for code submission")
-            files_to_submit = appscan_prepare()
-            python_utils.LOGGER.info("Submitting scans for analysis")
-            joblist, errMsg = appscan_submit(files_to_submit)
-            if (not joblist) or len(joblist) < len(files_to_submit):
-                if (not errMsg):
-                    errMsg = "Check status of existing scans."
-                #Error, we didn't return as many jobs as we should have
-                dash = os.environ.get('APPSCAN_SERVER_URL')
-                if os.path.isfile("%s/utilities/sendMessage.sh" % python_utils.EXT_DIR):
-                    command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> could not successfully submit scan.  {errMsg}\"'.format(path=python_utils.EXT_DIR,url=dash,errMsg=errMsg)
-                    proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-                    out, err = proc.communicate();
-                    python_utils.LOGGER.debug(out)
-                python_utils.LOGGER.error('ERROR: could not successfully submit scan. {errMsg} {url}'.format(url=dash,errMsg=errMsg))
-                endtime = timeit.default_timer()
-                print "Script completed in " + str(endtime - python_utils.SCRIPT_START_TIME) + " seconds"
-                sys.exit(4)
-            python_utils.LOGGER.info("Waiting for analysis to complete")
-        else:
-            python_utils.LOGGER.info("Existing job found, connecting")
+        sys.exit(4)
+    python_utils.LOGGER.info("Waiting for analysis to complete")
 
     # check on pending jobs, waiting if appropriate
     all_jobs_complete, high_issue_count, med_issue_count = wait_for_scans(joblist)
-
-    # force cleanup of all?
-    if parsed_args['forcecleanup']:
-        # cleanup the jobs we launched (since they're complete)
-        print "Cleaning up"
-        for job in joblist:
-            appscan_cancel(job)
-        # and cleanup the submitted irx files
-        for file in files_to_submit:
-            if os.path.isfile(file):
-                os.remove(file)
-            if os.path.isfile(file+".log"):
-                os.remove(file+".log")
-    else:
-        # cleanup old copies of this job
-        cleanup_old_jobs()
 
     # if we didn't successfully complete jobs, return that we timed out
     if not all_jobs_complete:
