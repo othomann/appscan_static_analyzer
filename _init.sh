@@ -134,22 +134,19 @@ export LOG_DIR=$ARCHIVE_DIR
 cur_dir=`pwd`
 cd ${EXT_DIR}
 #CLI is too large for extension, so always download, fail if can't
-FORCE_NEWEST_CLI=1
-if [[ $FORCE_NEWEST_CLI = 1 ]]; then
-    wget https://appscan.ibmcloud.com/api/SCX/StaticAnalyzer/SAClientUtil?os=linux -O SAClientUtil.zip -o /dev/null
-    unzip -o -qq SAClientUtil.zip
-    if [ $? -eq 9 ]; then
-        log_and_echo "$ERROR" "Unable to download SAClient"
-        exit 1
-    fi
-else
-    unzip -o -qq SAClientLocal.zip
+wget https://appscan.ibmcloud.com/api/SCX/StaticAnalyzer/SAClientUtil?os=linux -O SAClientUtil.zip -o /dev/null
+unzip -o -qq SAClientUtil.zip
+if [ $? -eq 9 ]; then
+    log_and_echo "$ERROR" "Unable to download SAClient"
+    exit 1
 fi
+
 cd `ls -d SAClient*/`
 export APPSCAN_INSTALL_DIR=`pwd`
 
 log_and_echo "Current dir: $APPSCAN_INSTALL_DIR"
-
+cd $APPSCAN_INSTALL_DIR
+chmod -R +x .
 cd $cur_dir
 export PATH=$APPSCAN_INSTALL_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$APPSCAN_INSTALL_DIR/bin:$LD_LIBRARY_PATH
