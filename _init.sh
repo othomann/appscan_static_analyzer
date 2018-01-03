@@ -147,9 +147,13 @@ else
 fi
 cd `ls -d SAClient*/`
 export APPSCAN_INSTALL_DIR=`pwd`
+
+log_and_echo "Current dir: $APPSCAN_INSTALL_DIR"
+
 cd $cur_dir
 export PATH=$APPSCAN_INSTALL_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$APPSCAN_INSTALL_DIR/bin:$LD_LIBRARY_PATH
+ls -la $APPSCAN_INSTALL_DIR/bin
 echo `appscan.sh version`
 
 ############################
