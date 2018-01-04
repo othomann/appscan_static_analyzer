@@ -149,7 +149,6 @@ cd $APPSCAN_INSTALL_DIR
 
 # HACK to workaround a limitation of the CLI zip file that doesn't contain executable scripts
 chmod -R +x $APPSCAN_INSTALL_DIR
-ls -la $APPSCAN_INSTALL_DIR/bin
 
 cd $cur_dir
 export PATH=$APPSCAN_INSTALL_DIR/bin:$PATH
