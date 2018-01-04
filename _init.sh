@@ -148,7 +148,7 @@ log_and_echo "Current dir: $APPSCAN_INSTALL_DIR"
 cd $APPSCAN_INSTALL_DIR
 
 # HACK to workaround a limitation of the CLI zip file that doesn't contain executable scripts
-chmod +x $APPSCAN_INSTALL_DIR/bin/appscan.sh
+chmod -R +x $APPSCAN_INSTALL_DIR
 ls -la $APPSCAN_INSTALL_DIR/bin
 
 cd $cur_dir
