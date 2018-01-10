@@ -107,7 +107,7 @@ else
 fi
 
 echo \"Get contents of current directory\"
-ls -la .
+ls -Rla .
 
 # run the python IBM Security Static Analyzer checker, dump results on output
 if [ -f ${EXT_DIR}/appscan_check.py ]; then 
