@@ -124,7 +124,7 @@ def appscan_prepare ():
         if os.path.isfile( logfileName ):
             os.remove( logfileName )
 
-    proc = Popen(["appscan.sh prepare"], 
+    proc = Popen(["appscan.sh prepare -t"], 
                  shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate();
 
