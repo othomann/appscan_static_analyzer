@@ -138,6 +138,10 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         end_script_time
         exit 1
     else
+# Display the config file contents
+        echo \"========= appscan-config.xml file contents ===============\"
+        cat ${EXT_DIR}/appscan-config.xml
+        echo \"==========================================================\"
         export CURRENT_DIR=`pwd`
         cd $EXT_DIR
         # need to be in EXT_DIR to get the package.json file
