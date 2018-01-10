@@ -106,6 +106,9 @@ else
 . /tmp/application_id.txt
 fi
 
+echo \"Get contents of current directory\"
+ls -la .
+
 # run the python IBM Security Static Analyzer checker, dump results on output
 if [ -f ${EXT_DIR}/appscan_check.py ]; then 
     if [[ $DEBUG -eq 1 ]]; then
