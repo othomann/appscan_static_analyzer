@@ -128,6 +128,8 @@ def appscan_prepare ():
                  shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate();
 
+    python_utils.LOGGER.warning(out)
+    python_utils.LOGGER.warning(err)
     if not "IRX file generation successful" in out:
         if "An IRX file was created, but it may be incomplete" in err:
             # some jar/war/ear files were not scannable, but some were.
