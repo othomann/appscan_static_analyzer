@@ -138,24 +138,22 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         end_script_time
         exit 1
     else
-# Display the config file contents
-        echo \"========= appscan-config.xml file contents ===============\"
-        cat ${EXT_DIR}/appscan-config.xml
-        echo \"==========================================================\"
         export CURRENT_DIR=`pwd`
         cd $EXT_DIR
         # need to be in EXT_DIR to get the package.json file
         npm install
         cd $CURRENT_DIR
-        node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result-toolint.json
-        node $EXT_DIR/display_job_name.js $EXT_DIR/appscan-result-toolint.json > /tmp/job_id.txt
-        if [ ! -s /tmp/job_id.txt ]; then
-           echo \"Error, could not extract job id\"
-           exit 1
-        else
-        . /tmp/job_id.txt
+        if [ -f $EXT_DIR/appscan-result-toolint.json ]; then
+            node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result-toolint.json
+            node $EXT_DIR/display_job_name.js $EXT_DIR/appscan-result-toolint.json > /tmp/job_id.txt
+            if [ ! -s /tmp/job_id.txt ]; then
+               echo \"Error, could not extract job id\"
+               exit 1
+            else
+                . /tmp/job_id.txt
+                echo -e \"${green}The job id to use for the deploy to DRA step: ${JOB_ID}${no_color}\"
+            fi
         fi
-        echo -e \"${green}The job id to use for the deploy to DRA step: ${JOB_ID}${no_color}\"
         log_and_echo \"$SUCCESSFUL\" \"Application scan was successful\"
     fi
 else 
