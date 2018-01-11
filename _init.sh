@@ -151,7 +151,7 @@ cd $APPSCAN_INSTALL_DIR
 chmod -R +x $APPSCAN_INSTALL_DIR
 
 cd $cur_dir
-export PATH=$APPSCAN_INSTALL_DIR/bin:$PATH
+export PATH=$APPSCAN_INSTALL_DIR/bin:/opt/IBM/node-v6.7.0/bin:$PATH
 export LD_LIBRARY_PATH=$APPSCAN_INSTALL_DIR/bin:$LD_LIBRARY_PATH
 echo `appscan.sh version`
 
