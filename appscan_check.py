@@ -99,7 +99,7 @@ def get_scanname_template (include_version=True):
 def appscan_login (userid, password):
     proc = Popen(["appscan.sh api_login -u " + userid + " -P " + password + " -persist"], 
                       shell=True, stdout=PIPE, stderr=PIPE)
-    out, err = proc.communicate();
+    out, err = proc.communicate()
 
     if not "Authenticated successfully." in out:
         raise Exception("Unable to login to Static Analysis service")
@@ -126,7 +126,7 @@ def appscan_prepare ():
 
     proc = Popen(["appscan.sh prepare -t"], 
                  shell=True, stdout=PIPE, stderr=PIPE)
-    out, err = proc.communicate();
+    out, err = proc.communicate()
 
     if not "IRX file generation successful" in out:
         if "An IRX file was created, but it may be incomplete" in err:
@@ -176,14 +176,14 @@ def send_job_id_to_toolint_broker (jobId):
           'organization_id' : os.environ.get('ORGANIZATION_GUID'),
           'scan_type' : 'staticsecurityscan',
           'toolchain_id': os.environ.get('PIPELINE_TOOLCHAIN_ID')
-        };
+        }
         python_utils.LOGGER.info("Write file " + appscan_result_file + " on disk")
         with open(appscan_result_file, 'w') as outfile:
             json.dump(appscan_result, outfile, sort_keys = True)
         # send the resulting json to the toolint-broker to be stored in the cloudant db
 
 def printVariable(str):
-    variable = os.environ.get(str);
+    variable = os.environ.get(str)
     if variable is None :
         python_utils.LOGGER.info("No value defined for " + str)
     else:
@@ -200,7 +200,7 @@ def appscan_submit (filelist):
         submit_scanname = get_scanname_template() + str(index)
         proc = Popen(["appscan.sh queue_analysis -f " + filename + " -n " + submit_scanname + " -a " + os.environ.get('APPSCAN_APP_ID') + ""], 
                           shell=True, stdout=PIPE, stderr=PIPE)
-        out, err = proc.communicate();
+        out, err = proc.communicate()
 
         transf_found = False
         for line in out.splitlines() :
@@ -229,7 +229,7 @@ def appscan_submit (filelist):
 def appscan_list ():
     proc = Popen(["appscan.sh list"], 
                       shell=True, stdout=PIPE, stderr=PIPE)
-    out, err = proc.communicate();
+    out, err = proc.communicate()
 
     scanlist = []
     for line in out.splitlines() :
@@ -332,7 +332,7 @@ def appscan_status (jobid):
 
     proc = Popen(["appscan.sh status -i " + str(jobid)], 
                       shell=True, stdout=PIPE, stderr=PIPE)
-    out, err = proc.communicate();
+    out, err = proc.communicate()
 
     if "request is invalid" in err:
         if python_utils.DEBUG:
@@ -357,7 +357,7 @@ def parse_key_eq_val (line):
     if line == None:
         return None
 
-    eqIndex = line.find("=");
+    eqIndex = line.find("=")
     if eqIndex != -1:
         return line[eqIndex+1:]
     else:
@@ -413,7 +413,7 @@ def appscan_info (jobid):
 
     command = "appscan.sh info -i " + str(jobid)
     proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-    out, err = proc.communicate();
+    out, err = proc.communicate()
 
     for line in out.splitlines() :
         if "NLowIssues=" in line:
@@ -565,22 +565,22 @@ def appscan_get_result (jobid, scan_name):
         raise Exception("No jobid to get results")
 
     # App name might have a space.
-    scan_name = scan_name.replace(" ", "-");
+    scan_name = scan_name.replace(" ", "-")
 
     # Get the appscan zip file
     proc = Popen(["appscan.sh get_result -i " + str(jobid) + " -d appscan-" + str(scan_name) + ".zip -t zip"],
                       shell=True, stdout=PIPE, stderr=PIPE, cwd=os.environ.get('EXT_DIR'))
-    out, err = proc.communicate();
+    out, err = proc.communicate()
 
 
-    print "Out = " + out
-    print "Err = " + err
+    print out
+    print err
 
 # get the result file for a given job
 def save_job_result (scan_name, job_result):
 
     # App name might have a space.
-    scan_name = scan_name.replace(" ", "-");
+    scan_name = scan_name.replace(" ", "-")
 
     # Store the job result summary
     with open(os.environ.get('EXT_DIR') + "/appscan-" + str(scan_name) + ".json", 'w') as outfile:
@@ -590,11 +590,11 @@ def save_job_result (scan_name, job_result):
 def upload_results_to_dra ():
     proc = Popen(["dra.sh"],
                       shell=True, stdout=PIPE, stderr=PIPE, cwd=os.environ.get('EXT_DIR'))
-    out, err = proc.communicate();
+    out, err = proc.communicate()
 
 
-    print "Out = " + out
-    print "Err = " + err
+    print out
+    print err
 
 # if the job we would run is already up (and either pending or complete),
 # we just want to get state (and wait for it if needed), not create a whole
@@ -715,8 +715,8 @@ def wait_for_scans (joblist):
 
                         # Search for file name results["Name"] + "*.zip"
                         if os.environ.get('DRA_IS_PRESENT') == "1":
-                            appscan_get_result(jobid, results["Name"]);
-                            save_job_result(results["Name"], job_result);
+                            appscan_get_result(jobid, results["Name"])
+                            save_job_result(results["Name"], job_result)
 
                         #appscan_get_result(jobid)
                         print python_utils.LABEL_GREEN + python_utils.STARS
@@ -777,7 +777,7 @@ try:
         if python_utils.DEBUG:
             print "running command " + command 
         proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-        out, err = proc.communicate();
+        out, err = proc.communicate()
         python_utils.LOGGER.debug(out)
     else:
         if python_utils.DEBUG:
@@ -802,7 +802,7 @@ try:
         if os.path.isfile("%s/utilities/sendMessage.sh" % python_utils.EXT_DIR):
             command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> could not successfully submit scan.  {errMsg}\"'.format(path=python_utils.EXT_DIR,url=dash,errMsg=errMsg)
             proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-            out, err = proc.communicate();
+            out, err = proc.communicate()
             python_utils.LOGGER.debug(out)
         python_utils.LOGGER.error('ERROR: could not successfully submit scan. {errMsg} {url}'.format(url=dash,errMsg=errMsg))
         endtime = timeit.default_timer()
@@ -820,7 +820,7 @@ try:
             dash = os.environ.get('APPSCAN_SERVER_URL')
             command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> did not complete within {wait} minutes.  Stage will need to be re-run after the scan completes.\"'.format(path=python_utils.EXT_DIR,url=dash,wait=python_utils.FULL_WAIT_TIME)
             proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-            out, err = proc.communicate();
+            out, err = proc.communicate()
             python_utils.LOGGER.debug(out)
 
         endtime = timeit.default_timer()
@@ -833,7 +833,7 @@ try:
                 dash = os.environ.get('APPSCAN_SERVER_URL')
                 command='{path}/utilities/sendMessage.sh -l bad -m \"<{url}|Static security scan> completed with {issues} high issues detected in the application.\"'.format(path=python_utils.EXT_DIR,url=dash, issues=high_issue_count)
                 proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-                out, err = proc.communicate();
+                out, err = proc.communicate()
                 python_utils.LOGGER.debug(out)
             
             endtime = timeit.default_timer()
@@ -845,13 +845,13 @@ try:
                 dash = os.environ.get('APPSCAN_SERVER_URL')
                 command='SLACK_COLOR=\"warning\" {path}/utilities/sendMessage.sh -l good -m \"<{url}|Static security scan> completed with no major issues.\"'.format(path=python_utils.EXT_DIR,url=dash)
                 proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-                out, err = proc.communicate();
+                out, err = proc.communicate()
                 python_utils.LOGGER.debug(out)
             else:            
                 dash = os.environ.get('APPSCAN_SERVER_URL')
                 command='{path}/utilities/sendMessage.sh -l good -m \"<{url}|Static security scan> completed with no major issues.\"'.format(path=python_utils.EXT_DIR,url=dash)
                 proc = Popen([command], shell=True, stdout=PIPE, stderr=PIPE)
-                out, err = proc.communicate();
+                out, err = proc.communicate()
                 python_utils.LOGGER.debug(out)
         endtime = timeit.default_timer()
         print "Script completed in " + str(endtime - python_utils.SCRIPT_START_TIME) + " seconds"
