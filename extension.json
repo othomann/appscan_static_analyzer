@@ -112,6 +112,7 @@ if [[ $DRA_IS_PRESENT -eq 1 ]]; then
     # need to be in EXT_DIR to get the package.json file
     npm install &>/dev/null
     npm install grunt-idra3 &>/dev/null
+    npm install grunt &>/dev/null
     cd $CURRENT_DIR
 fi
 
