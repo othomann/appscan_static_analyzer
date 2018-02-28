@@ -60,9 +60,13 @@ function dra_commands {
     echo -e "${no_color}"
 }
 
-installDRADependencies
-
-echo ""
+echo "Install installDRADependencies"
+debugme echo "Started installing DevOps Insights dependencies...";
+npm install grunt-idra3
+npm install grunt
+npm install -g grunt-cli
+debugme echo "Finished installing DevOps Insights dependencies.";
+echo "Install installDRADependencies done"
 
 for zipFile in appscan-*.zip;
 do
