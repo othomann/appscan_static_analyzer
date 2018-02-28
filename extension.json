@@ -111,7 +111,6 @@ cd $EXT_DIR
 # need to be in EXT_DIR to get the package.json file
 npm install npm
 npm install
-npm install -g grunt-cli
 cd $CURRENT_DIR
 
 # run the python IBM Security Static Analyzer checker, dump results on output
