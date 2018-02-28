@@ -160,7 +160,7 @@ def send_job_id_to_toolint_broker (jobId):
     python_utils.LOGGER.info("job id: " + jobId)
     if os.environ.get('DRA_IS_PRESENT') == "1":
         # All information to send to the toolint-broker
-        python_utils.LOGGER.info("DRA is present: " + jobId)
+        python_utils.LOGGER.info("DRA is present: jobId = " + jobId)
         appscan_result_file = os.environ.get('EXT_DIR') + '/appscan-result-toolint.json'
         appscan_result = {
           'appscan_app_id' : os.environ.get('APPSCAN_APP_ID'),
@@ -758,9 +758,9 @@ def wait_for_scans (joblist):
         json.dump(appscan_result, outfile, sort_keys = True)
 
     if os.environ.get('DRA_IS_PRESENT') == "1":
-        python_utils.LOGGER.info("Upload results to dra")
+        python_utils.LOGGER.debug("Upload results to dra")
         upload_results_to_dra()
-        python_utils.LOGGER.info("Done upload results to dra")
+        python_utils.LOGGER.debug("Done upload results to dra")
 
     return all_jobs_complete, high_issue_count, med_issue_count
 

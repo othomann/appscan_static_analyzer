@@ -106,12 +106,14 @@ else
 . /tmp/application_id.txt
 fi
 
-export CURRENT_DIR=`pwd`
-cd $EXT_DIR
-# need to be in EXT_DIR to get the package.json file
-npm install npm
-npm install
-cd $CURRENT_DIR
+if [[ $DRA_IS_PRESENT -eq 1]]; then
+    export CURRENT_DIR=`pwd`
+    cd $EXT_DIR
+    # need to be in EXT_DIR to get the package.json file
+    npm install &>/dev/null
+    npm install grunt-idra3 &>/dev/null
+    cd $CURRENT_DIR
+fi
 
 # run the python IBM Security Static Analyzer checker, dump results on output
 if [ -f ${EXT_DIR}/appscan_check.py ]; then 

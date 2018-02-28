@@ -145,10 +145,9 @@ cd `ls -d SAClient*/`
 export APPSCAN_INSTALL_DIR=`pwd`
 
 log_and_echo "Current dir: $APPSCAN_INSTALL_DIR"
-cd $APPSCAN_INSTALL_DIR
-
+#cd $APPSCAN_INSTALL_DIR
 # HACK to workaround a limitation of the CLI zip file that doesn't contain executable scripts
-chmod -R +x $APPSCAN_INSTALL_DIR
+#chmod -R +x $APPSCAN_INSTALL_DIR
 
 cd $cur_dir
 export PATH=$APPSCAN_INSTALL_DIR/bin:/opt/IBM/node-v6.7.0/bin:$PATH
@@ -158,12 +157,12 @@ echo `appscan.sh version`
 ############################
 # setup DRA                #
 ############################
-pushd $EXT_DIR >/dev/null
-git clone https://github.com/jparra5/dra_utilities.git dra_utilities
-popd >/dev/null
+#pushd $EXT_DIR >/dev/null
+#git clone https://github.com/jparra5/dra_utilities.git dra_utilities
+#popd >/dev/null
 
 # Call common initialization
-source $EXT_DIR/dra_utilities/init.sh
+#source $EXT_DIR/dra_utilities/init.sh
 
 log_and_echo "$LABEL" "Initialization complete"
 

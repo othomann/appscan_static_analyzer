@@ -21,16 +21,13 @@ function dra_commands {
     dra_grunt_command="$dra_grunt_command -stage=\"$3\""
     dra_grunt_command="$dra_grunt_command -drilldownUrl=\"$4\""
 
-#    debugme echo -e "dra_grunt_command with log & stage: \n\t$dra_grunt_command"
-    echo -e "dra_grunt_command with log & stage: \n\t$dra_grunt_command"
+    debugme echo -e "dra_grunt_command with log & stage: \n\t$dra_grunt_command"
 
     if [ -n "$2" ] && [ "$2" != " " ]; then
 
-#        debugme echo -e "\tartifact: '$2' is defined and not empty"
-        echo -e "\tartifact: '$2' is defined and not empty"
+        debugme echo -e "\tartifact: '$2' is defined and not empty"
         dra_grunt_command="$dra_grunt_command -artifact=\"$2\""
-#        debugme echo -e "\tdra_grunt_command: \n\t\t$dra_grunt_command"
-        echo -e "\tdra_grunt_command: \n\t\t$dra_grunt_command"
+        debugme echo -e "\tdra_grunt_command: \n\t\t$dra_grunt_command"
 
 
     else
@@ -39,17 +36,14 @@ function dra_commands {
     fi
 
 
-    echo -e "FINAL dra_grunt_command: $dra_grunt_command"
-    echo -e "${no_color}"
-#    debugme echo -e "FINAL dra_grunt_command: $dra_grunt_command"
-#    debugme echo -e "${no_color}"
+    debugme echo -e "FINAL dra_grunt_command: $dra_grunt_command"
+    debugme echo -e "${no_color}"
 
 
     eval "$dra_grunt_command -f --no-color"
     GRUNT_RESULT=$?
 
-#    debugme echo "GRUNT_RESULT: $GRUNT_RESULT"
-    echo "GRUNT_RESULT: $GRUNT_RESULT"
+    debugme echo "GRUNT_RESULT: $GRUNT_RESULT"
 
     if [ $GRUNT_RESULT -ne 0 ]; then
         exit 1
