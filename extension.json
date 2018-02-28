@@ -106,6 +106,13 @@ else
 . /tmp/application_id.txt
 fi
 
+export CURRENT_DIR=`pwd`
+cd $EXT_DIR
+# need to be in EXT_DIR to get the package.json file
+npm install
+npm install -g grunt-cli
+cd $CURRENT_DIR
+
 # run the python IBM Security Static Analyzer checker, dump results on output
 if [ -f ${EXT_DIR}/appscan_check.py ]; then 
     if [[ $DEBUG -eq 1 ]]; then
@@ -138,11 +145,6 @@ if [ -f ${EXT_DIR}/appscan_check.py ]; then
         end_script_time
         exit 1
     else
-        export CURRENT_DIR=`pwd`
-        cd $EXT_DIR
-        # need to be in EXT_DIR to get the package.json file
-        npm install
-        cd $CURRENT_DIR
         if [ -f $EXT_DIR/appscan-result-toolint.json ]; then
             node $EXT_DIR/getorg_name.js $EXT_DIR/appscan-result-toolint.json
             node $EXT_DIR/display_job_name.js $EXT_DIR/appscan-result-toolint.json > /tmp/job_id.txt

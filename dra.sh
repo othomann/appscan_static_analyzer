@@ -16,9 +16,7 @@
 
 function dra_commands {
     echo -e "${no_color}"
-    node_modules_dir=`npm root`
-
-    dra_grunt_command="grunt --gruntfile=$node_modules_dir/grunt-idra3/idra.js"
+    dra_grunt_command="grunt --gruntfile=$EXT_DIR/node_modules/grunt-idra3/idra.js"
     dra_grunt_command="$dra_grunt_command -testResult=\"$1\""
     dra_grunt_command="$dra_grunt_command -stage=\"$3\""
     dra_grunt_command="$dra_grunt_command -drilldownUrl=\"$4\""
@@ -59,14 +57,6 @@ function dra_commands {
 
     echo -e "${no_color}"
 }
-
-echo "Install installDRADependencies"
-debugme echo "Started installing DevOps Insights dependencies...";
-npm install grunt-idra3
-npm install grunt
-npm install -g grunt-cli
-debugme echo "Finished installing DevOps Insights dependencies.";
-echo "Install installDRADependencies done"
 
 for zipFile in appscan-*.zip;
 do

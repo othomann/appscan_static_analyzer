@@ -5,7 +5,9 @@
   "dependencies": {
     "request-promise": "latest",
     "request": "latest",
-    "fs": "latest"
+    "fs": "latest",
+    "grunt-idra3" : "latest",
+    "grunt" : "latest"
   },
   "engines": {
     "node": "^6.0.0"
