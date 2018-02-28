@@ -106,7 +106,7 @@ else
 . /tmp/application_id.txt
 fi
 
-if [[ $DRA_IS_PRESENT -eq 1]]; then
+if [[ $DRA_IS_PRESENT -eq 1 ]]; then
     export CURRENT_DIR=`pwd`
     cd $EXT_DIR
     # need to be in EXT_DIR to get the package.json file
